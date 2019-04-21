@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="projet s2 alexhugz" version="4">
+  <OBJECT>
+    <ID name="projet s2 alexhugz" mc="Standard.Package" uid="9eba81d7-4a6f-4755-83d9-dcf928457215"/>
+    <PID name="Projet S2 AlexHugz" mc="Standard.Project" uid="62f991c5-ead8-4942-8e91-7599479d74e4"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[projet s2 alexhugz]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="Joueur" mc="Standard.Actor" uid="7e7af538-5771-4984-9cf4-285be5b2749e"/>
+        <COMPID name="Commencer une nouvelle partie" mc="Standard.UseCase" uid="0513016f-f010-4a26-a648-e65d0428ef22"/>
+        <COMPID name="Charger partie" mc="Standard.UseCase" uid="680fb438-ad9a-4016-85a4-0ca9089496bb"/>
+        <COMPID name="Abandonner" mc="Standard.UseCase" uid="850576d4-c9da-4d74-a8ea-9c77b85ab7ac"/>
+        <COMPID name="Déplacer une pièce " mc="Standard.UseCase" uid="efdf1d99-b23b-4cb3-9e3a-f95b7642c783"/>
+        <COMPID name="Enregistrer partie " mc="Standard.UseCase" uid="de6102a4-551e-4a3b-95d6-0d69eae40b2d"/>
+        <COMPID name="Sauvegarder le coup" mc="Standard.UseCase" uid="9a1eadcd-9dd0-4757-9a82-1059b05ce08a"/>
+        <COMPID name="Valider le coup" mc="Standard.UseCase" uid="a5b67c11-8527-4246-9510-b083ebe0dec8"/>
+        <COMPID name="Signaler fin de partie" mc="Standard.UseCase" uid="dcac5ade-108d-439f-b8b0-a5ae657c28a1"/>
+        <COMPID name="Logique du jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
+        <COMPID name="InterfaceTerminal" mc="Standard.Package" uid="de6bd943-eab2-4021-83db-18a5f7a6d48f"/>
+      </COMP>
+      <LINK relation="Extension">
+        <FOREIGNID name="JavaPackage" mc="Infrastructure.Stereotype" uid="01ec23a8-0000-0126-0000-000000000000"/>
+      </LINK>
+      <COMP relation="Product">
+        <COMPID name="Diagramme de cas" mc="Standard.UseCaseDiagram" uid="aa97a12d-cfc8-4b24-91c6-d71d8936baf9"/>
+        <COMPID name="Diagramme de classes" mc="Standard.ClassDiagram" uid="cb21e2ac-d8dd-476d-8fcd-abd445219e60"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

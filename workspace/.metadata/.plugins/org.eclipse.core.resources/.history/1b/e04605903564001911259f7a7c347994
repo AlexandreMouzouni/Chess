@@ -1,0 +1,7 @@
+package jeu;
+
+public class TestEchiquier {
+	public static void main(String[] args) {
+		System.out.println("test");
+	}
+}
