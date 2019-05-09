@@ -2,7 +2,7 @@
 <!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Joueur" version="4">
   <OBJECT>
     <ID name="Joueur" mc="Standard.Class" uid="ab15064c-a9c6-4b11-8c9a-b3b59cedfe29"/>
-    <PID name="Logique du jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
+    <PID name="jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
     <ATTRIBUTES>
       <ATT name="IsActive">false</ATT>
       <ATT name="IsMain">false</ATT>
@@ -46,11 +46,7 @@
                   <ATT name="Name"><![CDATA[pos]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <LINK relation="Type">
-                    <ID name="Position" mc="Standard.Class" uid="c5f76aa6-12df-4ee2-a83f-3b5c3ea0e1dc"/>
-                  </LINK>
-                </DEPENDENCIES>
+                <DEPENDENCIES></DEPENDENCIES>
               </OBJECT>
               <OBJECT>
                 <ID name="piece" mc="Standard.Parameter" uid="f69913d2-82ad-447c-8a5e-5f3c5081f6ae"/>

@@ -2,7 +2,7 @@
 <!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Cavalier" version="4">
   <OBJECT>
     <ID name="Cavalier" mc="Standard.Class" uid="7d04237b-e42b-4a58-9729-9ab91afeee7c"/>
-    <PID name="Logique du jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
+    <PID name="jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
     <ATTRIBUTES>
       <ATT name="IsActive">false</ATT>
       <ATT name="IsMain">false</ATT>
@@ -46,11 +46,7 @@
                   <ATT name="Name"><![CDATA[pos]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <LINK relation="Type">
-                    <ID name="Position" mc="Standard.Class" uid="c5f76aa6-12df-4ee2-a83f-3b5c3ea0e1dc"/>
-                  </LINK>
-                </DEPENDENCIES>
+                <DEPENDENCIES></DEPENDENCIES>
               </OBJECT>
             </COMP>
           </DEPENDENCIES>

@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Logique du jeu" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="jeu" version="4">
   <OBJECT>
-    <ID name="Logique du jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
+    <ID name="jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
     <PID name="projet s2 alexhugz" mc="Standard.Package" uid="9eba81d7-4a6f-4755-83d9-dcf928457215"/>
     <ATTRIBUTES>
       <ATT name="IsInstantiable">false</ATT>
@@ -9,7 +9,7 @@
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[Logique du jeu]]></ATT>
+      <ATT name="Name"><![CDATA[jeu]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
@@ -98,7 +98,6 @@
             </COMP>
           </DEPENDENCIES>
         </OBJECT>
-        <COMPID name="Position" mc="Standard.Class" uid="c5f76aa6-12df-4ee2-a83f-3b5c3ea0e1dc"/>
         <COMPID name="Cavalier" mc="Standard.Class" uid="7d04237b-e42b-4a58-9729-9ab91afeee7c"/>
         <COMPID name="Fou" mc="Standard.Class" uid="67ce68ce-210f-46e8-bfe1-320ea8b46f5b"/>
         <COMPID name="Tour" mc="Standard.Class" uid="25fd6143-bef9-4b4d-bb02-7a113f595ba9"/>
