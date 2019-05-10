@@ -24,12 +24,27 @@ public class Echiquier {
     private boolean tourAJouer = Couleur.BLANC;
     private int[] enPassant = new int[2]; // Position en passant
     
+    public Echiquier() {
+    	//init();
+    }
+    
+    // Constructeur vide (de test).
+    protected Echiquier(boolean test) {}
+    
     private Piece[] getPlateau() {
     	return this.plateau;
     }
     
+    public Piece getPiece(Position pos) {
+    	return this.getPiece(pos.x, pos.y);
+    }
+    
     public Piece getPiece(int ligne, int colonne) {
-    	return this.plateau[ligne * 8 + colonne];
+    	return this.plateau[ Position.tradPosition(ligne, colonne) ];
+    }
+    
+    public boolean containsPiece(Position pos) {
+    	return this.containsPiece(pos.x, pos.y);
     }
     
     public boolean containsPiece(int ligne, int colonne) {
@@ -40,14 +55,13 @@ public class Echiquier {
     	}
     }
     
-    public void setPiece(int x, int y, Piece p) {
-    	this.plateau[x * 8 + y] = p;
+    public void setPiece(Position pos, Piece p) {
+    	this.setPiece(pos.x, pos.y, p);
     }
     
-    public Echiquier() {
-    	//init();
+    public void setPiece(int ligne, int colonne, Piece p) {
+    	this.plateau[ Position.tradPosition(ligne, colonne) ] = p;
     }
-    
     /*
      * Initialise l'échiquer avec un plateau. La position de départ est toujours la même.
      * 
@@ -85,6 +99,7 @@ public class Echiquier {
     
     public static void main(String[] args) {
     	Echiquier e = new Echiquier();
+    	this.setPiece(1,1, new Fou());
     	e.afficher();
     }
 }
