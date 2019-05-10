@@ -99,7 +99,6 @@ public class Echiquier {
     
     public static void main(String[] args) {
     	Echiquier e = new Echiquier();
-    	this.setPiece(1,1, new Fou());
     	e.afficher();
     }
 }

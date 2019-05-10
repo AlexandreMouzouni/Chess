@@ -15,89 +15,6 @@
     <DEPENDENCIES>
       <COMP relation="OwnedElement">
         <COMPID name="Piece" mc="Standard.Class" uid="3de2af4f-e6b9-4420-b4e3-bbf6de074a0a"/>
-        <OBJECT>
-          <ID name="Couleur" mc="Standard.Enumeration" uid="6586c8d3-0bd3-40f8-8199-1ff5b1baa481"/>
-          <ATTRIBUTES>
-            <ATT name="IsElementary">true</ATT>
-            <ATT name="IsAbstract">false</ATT>
-            <ATT name="IsLeaf">false</ATT>
-            <ATT name="IsRoot">false</ATT>
-            <ATT name="Visibility">Public</ATT>
-            <ATT name="Name"><![CDATA[Couleur]]></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <COMP relation="OwnedAttribute">
-              <OBJECT>
-                <ID name="Blanc" mc="Standard.Attribute" uid="5fe7ac6a-7d61-41f6-b8ec-b0f8917fb7e2"/>
-                <ATTRIBUTES>
-                  <ATT name="TypeConstraint"></ATT>
-                  <ATT name="Value"></ATT>
-                  <ATT name="TargetIsClass">false</ATT>
-                  <ATT name="Changeable">ReadWrite</ATT>
-                  <ATT name="IsDerived">false</ATT>
-                  <ATT name="IsOrdered">false</ATT>
-                  <ATT name="IsUnique">false</ATT>
-                  <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
-                  <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-                  <ATT name="Visibility">Private</ATT>
-                  <ATT name="IsClass">false</ATT>
-                  <ATT name="IsAbstract">false</ATT>
-                  <ATT name="Name"><![CDATA[Blanc]]></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <LINK relation="Type">
-                    <FOREIGNID name="string" mc="Standard.DataType" uid="00000004-0000-000d-0000-000000000000"/>
-                  </LINK>
-                </DEPENDENCIES>
-              </OBJECT>
-              <OBJECT>
-                <ID name="Noir" mc="Standard.Attribute" uid="bda4104d-b711-44b0-b434-939027163475"/>
-                <ATTRIBUTES>
-                  <ATT name="TypeConstraint"></ATT>
-                  <ATT name="Value"></ATT>
-                  <ATT name="TargetIsClass">false</ATT>
-                  <ATT name="Changeable">ReadWrite</ATT>
-                  <ATT name="IsDerived">false</ATT>
-                  <ATT name="IsOrdered">false</ATT>
-                  <ATT name="IsUnique">false</ATT>
-                  <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
-                  <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-                  <ATT name="Visibility">Private</ATT>
-                  <ATT name="IsClass">false</ATT>
-                  <ATT name="IsAbstract">false</ATT>
-                  <ATT name="Name"><![CDATA[Noir]]></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <LINK relation="Type">
-                    <FOREIGNID name="string" mc="Standard.DataType" uid="00000004-0000-000d-0000-000000000000"/>
-                  </LINK>
-                </DEPENDENCIES>
-              </OBJECT>
-            </COMP>
-            <LINK relation="Extension">
-              <FOREIGNID name="JavaEnumeration" mc="Infrastructure.Stereotype" uid="01ec23a8-0000-0262-0000-000000000000"/>
-            </LINK>
-            <COMP relation="Descriptor">
-              <OBJECT>
-                <ID name="" mc="Infrastructure.Note" uid="54974890-8ca0-4e9b-9818-383aec1c8b75"/>
-                <ATTRIBUTES>
-                  <ATT name="Content"><![CDATA[<Enter note text here>]]></ATT>
-                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
-                  <ATT name="Name"></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <LINK relation="Model">
-                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
-                  </LINK>
-                </DEPENDENCIES>
-              </OBJECT>
-            </COMP>
-          </DEPENDENCIES>
-        </OBJECT>
         <COMPID name="Cavalier" mc="Standard.Class" uid="7d04237b-e42b-4a58-9729-9ab91afeee7c"/>
         <COMPID name="Fou" mc="Standard.Class" uid="67ce68ce-210f-46e8-bfe1-320ea8b46f5b"/>
         <COMPID name="Tour" mc="Standard.Class" uid="25fd6143-bef9-4b4d-bb02-7a113f595ba9"/>
@@ -107,6 +24,12 @@
         <COMPID name="Echiquier" mc="Standard.Class" uid="986f6e8d-eb0d-4f6e-969c-48164f7032dd"/>
         <COMPID name="Joueur" mc="Standard.Class" uid="ab15064c-a9c6-4b11-8c9a-b3b59cedfe29"/>
         <COMPID name="Partie" mc="Standard.Class" uid="0e658eb7-afbd-472a-b54f-78d0209260db"/>
+        <COMPID name="Couleur" mc="Standard.Interface" uid="2b4b8ed8-1903-4fac-a1b7-9b8abfc1e01c"/>
+        <COMPID name="Jeu" mc="Standard.Class" uid="79afba56-1fc5-4ed4-a2db-43150ad7c029"/>
+        <COMPID name="Position" mc="Standard.Class" uid="16109041-fd3f-49e8-b703-091992f37c6a"/>
+        <COMPID name="Roques" mc="Standard.Interface" uid="114ddc9c-15a7-4212-b7d4-5ecb3a4e1462"/>
+        <COMPID name="TestJeu" mc="Standard.Class" uid="213767ca-3813-4324-af59-d238ac651cc1"/>
+        <COMPID name="UtilsEchiquier" mc="Standard.Class" uid="83ac4913-85ff-455f-a3a1-c66b10578ec9"/>
       </COMP>
       <LINK relation="Extension">
         <FOREIGNID name="JavaPackage" mc="Infrastructure.Stereotype" uid="01ec23a8-0000-0126-0000-000000000000"/>

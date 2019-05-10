@@ -21,6 +21,4 @@ public class Jeu {
 	}
 	Partie.add(nouveauEchiquier)
 	*/
-	
-	public void 
 }

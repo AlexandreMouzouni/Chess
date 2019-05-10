@@ -24,6 +24,7 @@
         <COMPID name="Valider le coup" mc="Standard.UseCase" uid="a5b67c11-8527-4246-9510-b083ebe0dec8"/>
         <COMPID name="Signaler fin de partie" mc="Standard.UseCase" uid="dcac5ade-108d-439f-b8b0-a5ae657c28a1"/>
         <COMPID name="jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
+        <COMPID name="java" mc="Standard.Package" uid="6322fb23-b5a8-497b-ba41-05baba340681"/>
       </COMP>
       <LINK relation="Extension">
         <FOREIGNID name="JavaPackage" mc="Infrastructure.Stereotype" uid="01ec23a8-0000-0126-0000-000000000000"/>
