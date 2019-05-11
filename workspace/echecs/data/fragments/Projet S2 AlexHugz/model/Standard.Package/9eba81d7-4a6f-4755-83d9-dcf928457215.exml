@@ -25,6 +25,8 @@
         <COMPID name="Signaler fin de partie" mc="Standard.UseCase" uid="dcac5ade-108d-439f-b8b0-a5ae657c28a1"/>
         <COMPID name="jeu" mc="Standard.Package" uid="f944af28-0f41-4ddb-beae-c5a2aa65fc4b"/>
         <COMPID name="java" mc="Standard.Package" uid="6322fb23-b5a8-497b-ba41-05baba340681"/>
+        <COMPID name="Demander promotion" mc="Standard.UseCase" uid="4a31baf9-1ec4-439b-b1bf-ad76169e93ad"/>
+        <COMPID name="Demande d'annonce de nulle" mc="Standard.UseCase" uid="5e0134d1-8fcd-4f59-8206-786082a2b119"/>
       </COMP>
       <LINK relation="Extension">
         <FOREIGNID name="JavaPackage" mc="Infrastructure.Stereotype" uid="01ec23a8-0000-0126-0000-000000000000"/>

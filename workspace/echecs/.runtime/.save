@@ -1,6 +1,7 @@
-#Fri May 10 19:03:07 CEST 2019
+#Sat May 11 10:00:37 CEST 2019
 org.modelio.module.propertytab.JavaDesigner\ v3.8.01\ GModule\ @file\:///home/student/905/11800828/.modelio/3.8/modules/JavaDesigner_3.8.01/JavaDesigner_3.8.01.jmdac\ runtime\ module_.org.modelio.diagram.perspective.parentId=app.ui.ext_com.partstack.right
 org.modelio.module.propertytab.JavaDesigner\ v3.8.01\ GModule\ @file\:///home/student/905/11800828/.modelio/3.8/modules/JavaDesigner_3.8.01/JavaDesigner_3.8.01.jmdac\ runtime\ module_.org.modelio.development.perspective.parentId=app.ui.ext_com.partstack.bottom
+org.modelio.diagram.editor.OpenedDiagrams1='Diagramme de classes' {cb21e2ac-d8dd-476d-8fcd-abd445219e60} Standard.ClassDiagram
 org.modelio.module.propertytab.JavaDesigner\ v3.8.01\ GModule\ @file\:///home/student/905/11800828/.modelio/3.8/modules/JavaDesigner_3.8.01/JavaDesigner_3.8.01.jmdac\ runtime\ module_.org.modelio.full.perspective.parentId=app.ui.ext_com.partstack.bottom
-org.modelio.diagram.editor.OpenedDiagrams0='Diagramme de classes' {cb21e2ac-d8dd-476d-8fcd-abd445219e60} Standard.ClassDiagram
+org.modelio.diagram.editor.OpenedDiagrams0='Diagramme de cas' {aa97a12d-cfc8-4b24-91c6-d71d8936baf9} Standard.UseCaseDiagram
 org.modelio.module.propertytab.JavaDesigner\ v3.8.01\ GModule\ @file\:///home/student/905/11800828/.modelio/3.8/modules/JavaDesigner_3.8.01/JavaDesigner_3.8.01.jmdac\ runtime\ module_.org.modelio.app.ui.model.perspective.parentId=org.modelio.app.bottom.parts
