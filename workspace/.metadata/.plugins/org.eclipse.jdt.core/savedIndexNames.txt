@@ -1,2 +1,4 @@
-INDEX VERSION 1.131+/home/xy/workspace/.metadata/.plugins/org.eclipse.jdt.core
-646308851.index
+INDEX VERSION 1.131+C:\Users\xy\Desktop\echecs_java\workspace\.metadata\.plugins\org.eclipse.jdt.core
+789344348.index
+3370123532.index
+1059308878.index

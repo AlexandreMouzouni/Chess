@@ -17,7 +17,7 @@ import com.modeliosoft.modelio.javadesigner.annotations.objid;
  */
 public class Echiquier {
 	// Les pièces.
-    private Piece[] plateau = new Piece[64];
+    private Piece[][] plateau = new Piece[8][8];
     // Les roques possibles. Au début, tout les roques sont possibles.
     private boolean[] roquesPossibles = {true, true, true, true};
     // Le tour actuel. Le premier tour est toujours aux blancs.
@@ -31,7 +31,7 @@ public class Echiquier {
     // Constructeur vide (de test).
     protected Echiquier(boolean test) {}
     
-    private Piece[] getPlateau() {
+    public Piece[][] getPlateau() {
     	return this.plateau;
     }
     
@@ -40,7 +40,7 @@ public class Echiquier {
     }
     
     public Piece getPiece(int ligne, int colonne) {
-    	return this.plateau[ Position.tradPosition(ligne, colonne) ];
+    	return this.plateau[ligne][colonne];
     }
     
     public boolean containsPiece(Position pos) {
@@ -60,7 +60,7 @@ public class Echiquier {
     }
     
     public void setPiece(int ligne, int colonne, Piece p) {
-    	this.plateau[ Position.tradPosition(ligne, colonne) ] = p;
+    	this.plateau[ligne][colonne] = p;
     }
     /*
      * Initialise l'échiquer avec un plateau. La position de départ est toujours la même.
@@ -80,19 +80,23 @@ public class Echiquier {
     	//this.setPiece(0, 0, new Tour);
     }
     public void afficher() {
-    	Piece[] plateau = this.getPlateau();
+    	Piece[][] plateau = this.getPlateau();
     	
     	String s = "";
-    	String substring = "";
     	
-    	for (int i = 0; i < 64; i++) {
-    		substring += plateau[i] + " ";
-    		
-    		if ((i + 1) % 8 == 0 || i == 64) {
-    			s += substring + "|" + "\n";
-    			substring = "";
+    	for(int i=0; i<plateau.length;i++) {
+    		for (int j=0; j<plateau[i].length;j++) {
+    			
+    			if (plateau[i].length -1 ==j) {
+    				s +=  plateau[i][j];
+    			}
+    			else {
+    				s +=  plateau[i][j]+" ";
+    			}
     		}
+    		s = s+ "\n";
     	}
+    	
     	System.out.println(s);
     }
     //public Echiquier deplacement(int xDepart, int yDepart, int xArrivee, int yArrivee) {}

@@ -1,0 +1,53 @@
+package jeu;
+
+import java.util.ArrayList;
+
+public class Roi extends Piece {
+	public boolean estDeplace = false;
+	
+	public Roi(boolean uneCouleur, int uneLigne, int uneColonne) {
+		super(uneCouleur, uneLigne, uneColonne);
+	}
+	
+	public Roi(boolean uneCouleur, Position unePosition) {
+		this(uneCouleur, unePosition.x, unePosition.y);
+	}
+
+	public ArrayList<Position> listeCoupValide(Echiquier e) {
+		Position positionDeDepart = super.getPosition();
+		Position[] vecteurPosition ={new Position(1,-1),new Position(-1,-1),new Position(1,1),new Position(-1,1),
+				new Position(0,1),new Position(0,-1),new Position(1,0),new Position(-1,0)};
+		
+		for (int i =0 ; i<8; i++ ) {
+			Position nouvellePosition = positionDeDepart;
+			boolean estBloque  = false; 
+			
+			nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
+			// Est-ce que la position générée n'est pas hors de l'échiquier?
+			if (Position.positionValide(nouvellePosition)) {
+				// Est-ce qu'il y a une pièce à cette position?
+				if (e.containsPiece(nouvellePosition)){
+					estBloque = true;
+				}
+					
+				super.addCoup(nouvellePosition);
+				}
+			}
+		
+		return listeCoupPossible;
+	}
+
+	public static void main(String args[]) {
+    	Echiquier e = new Echiquier(true); // Echiquier vide
+    	
+    	Position posFou = new Position(1,1);
+    	
+    	e.setPiece(posFou, new Roi(Couleur.BLANC, posFou));    	
+    	e.setPiece(0,0, new Cavalier(Couleur.NOIR, 0,0));
+    	ArrayList<Position> a = e.getPiece(posFou).listeCoupValide(e);
+    	
+    	for (Position p : a) {
+    		System.out.println(p);
+    	}
+	}
+}

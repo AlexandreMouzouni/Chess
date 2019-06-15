@@ -6,6 +6,8 @@ import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
 @objid ("25fd6143-bef9-4b4d-bb02-7a113f595ba9")
 public class Tour extends Piece {
+	public boolean estDeplace = false;
+	
 	public Tour(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
 	}
@@ -13,11 +15,12 @@ public class Tour extends Piece {
 	public Tour(boolean uneCouleur, Position unePosition) {
 		this(uneCouleur, unePosition.x, unePosition.y);
 	}
-	
-	public boolean estDeplace = false;
 
-	public ArrayList<Position> listeCoupValide(Echiquier e) {
-		ArrayList<Position> listeCoupPossible = new ArrayList<Position>();
+	public void calculCoups(Echiquier e, Partie p) {
+		this.calculCoups(e);
+	}
+	
+	public void calculCoups(Echiquier e) {
 		Position positionDeDepart = super.getPosition();
 		Position[] vecteurPosition ={new Position(0,1),new Position(0,-1),new Position(1,0),new Position(-1,0)};
 		
@@ -33,12 +36,10 @@ public class Tour extends Piece {
 						estBloque = true;
 					}
 					
-					listeCoupPossible.add(nouvellePosition);
+					super.addCoup(nouvellePosition);
 				}
 			}
 		}
-		
-		return listeCoupPossible;
 	}
 
 	public static void main(String args[]) {
@@ -46,7 +47,8 @@ public class Tour extends Piece {
     	
     	e.setPiece(1,1, new Tour(Couleur.BLANC, 1,1));    	
     	e.setPiece(1,2, new Cavalier(Couleur.NOIR, 1,2));
-    	ArrayList<Position> a = e.getPiece(1,1).listeCoupValide(e);
+    	((Tour) e.getPiece(1,1)).calculCoups(e);
+    	ArrayList<Position> a = e.getPiece(1,1).getListeCoups();
     	
     	for (Position p : a) {
     		System.out.println(p);

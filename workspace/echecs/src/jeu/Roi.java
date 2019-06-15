@@ -2,11 +2,9 @@ package jeu;
 
 import java.util.ArrayList;
 
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
-
-
-
-public class Roi  extends Piece {
+public class Roi extends Piece {
+	public boolean estDeplace = false;
+	
 	public Roi(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
 	}
@@ -15,29 +13,26 @@ public class Roi  extends Piece {
 		this(uneCouleur, unePosition.x, unePosition.y);
 	}
 	
-	public boolean estDeplace = false;
+	public void calculCoups(Echiquier e, Partie p) {
+		this.calculCoups(e);
+	}
 
-	public ArrayList<Position> listeCoupValide(Echiquier e) {
-		ArrayList<Position> listeCoupPossible = new ArrayList<Position>();
+	public void calculCoups(Echiquier e) {
 		Position positionDeDepart = super.getPosition();
 		Position[] vecteurPosition ={new Position(1,-1),new Position(-1,-1),new Position(1,1),new Position(-1,1),
 				new Position(0,1),new Position(0,-1),new Position(1,0),new Position(-1,0)};
 		
 		for (int i =0 ; i<8; i++ ) {
 			Position nouvellePosition = positionDeDepart;
-			boolean estBloque  = false; 
+			boolean estBloque  = false; //????
 			
 			nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
+			// Est-ce que la position générée n'est pas hors de l'échiquier?
 			if (Position.positionValide(nouvellePosition)) {
-				if (e.containsPiece(nouvellePosition)){
-					estBloque = true;
-				}
 					
-				listeCoupPossible.add(nouvellePosition);
+				super.addCoup(nouvellePosition);
 				}
 			}
-		
-		return listeCoupPossible;
 	}
 
 	public static void main(String args[]) {
@@ -45,9 +40,11 @@ public class Roi  extends Piece {
     	
     	Position posFou = new Position(1,1);
     	
-    	e.setPiece(posFou, new Roi(Couleur.BLANC, posFou));    	
+    	e.setPiece(posFou, new Roi(Couleur.BLANC, posFou));
     	e.setPiece(0,0, new Cavalier(Couleur.NOIR, 0,0));
-    	ArrayList<Position> a = e.getPiece(posFou).listeCoupValide(e);
+    	
+    	((Roi) e.getPiece(posFou)).calculCoups(e);
+    	ArrayList<Position> a = e.getPiece(posFou).getListeCoups();
     	
     	for (Position p : a) {
     		System.out.println(p);

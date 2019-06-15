@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
-
-
 public class Fou  extends Piece {
+	
+	public boolean estDeplace = false;
+	
 	public Fou(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
 	}
@@ -14,32 +15,33 @@ public class Fou  extends Piece {
 	public Fou(boolean uneCouleur, Position unePosition) {
 		this(uneCouleur, unePosition.x, unePosition.y);
 	}
-	
-	public boolean estDeplace = false;
 
-	public ArrayList<Position> listeCoupValide(Echiquier e) {
-		ArrayList<Position> listeCoupPossible = new ArrayList<Position>();
+	public void calculCoups(Echiquier e, Partie p) {
+		this.calculCoups(e);
+	}
+	
+	public void calculCoups(Echiquier e) {
 		Position positionDeDepart = super.getPosition();
+		// Directions: en diagonale
 		Position[] vecteurPosition ={new Position(1,-1),new Position(-1,-1),new Position(1,1),new Position(-1,1)};
 		
 		for (int i =0 ; i<4; i++ ) {
 			Position nouvellePosition = positionDeDepart;
-			boolean estBloque  = false; 
+			boolean estBloque = false; 
 			
 			while (Position.positionValide(nouvellePosition) && estBloque == false ) {
 				nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
 				
+				// Est-ce que la position générée n'est pas hors de l'échiquier?
 				if (Position.positionValide(nouvellePosition)) {
 					if (e.containsPiece(nouvellePosition)){
 						estBloque = true;
 					}
 					
-					listeCoupPossible.add(nouvellePosition);
+					super.addCoup(nouvellePosition);
 				}
 			}
 		}
-		
-		return listeCoupPossible;
 	}
 
 	public static void main(String args[]) {
@@ -49,7 +51,8 @@ public class Fou  extends Piece {
     	
     	e.setPiece(posFou, new Fou(Couleur.BLANC, posFou));    	
     	e.setPiece(0,0, new Cavalier(Couleur.NOIR, 0,0));
-    	ArrayList<Position> a = e.getPiece(posFou).listeCoupValide(e);
+    	((Fou) e.getPiece(posFou)).calculCoups(e);
+    	ArrayList<Position> a = e.getPiece(posFou).getListeCoups();
     	
     	for (Position p : a) {
     		System.out.println(p);

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
-
-
 public class Reine  extends Piece {
 	public Reine(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
@@ -16,9 +14,14 @@ public class Reine  extends Piece {
 	}
 	
 	public boolean estDeplace = false;
+	
 
-	public ArrayList<Position> listeCoupValide(Echiquier e) {
-		ArrayList<Position> listeCoupPossible = new ArrayList<Position>();
+	@Override
+	public void calculCoups(Echiquier e, Partie p) {
+		this.calculCoups(e);
+	}
+	
+	public void calculCoups(Echiquier e) {
 		Position positionDeDepart = super.getPosition();
 		Position[] vecteurPosition ={new Position(1,-1),new Position(-1,-1),new Position(1,1),new Position(-1,1),
 				new Position(0,1),new Position(0,-1),new Position(1,0),new Position(-1,0)};
@@ -36,14 +39,13 @@ public class Reine  extends Piece {
 						estBloque = true;
 					}
 					
-					listeCoupPossible.add(nouvellePosition);
+					super.addCoup(nouvellePosition);
 				}
 			}
 		}
-		
-		return listeCoupPossible;
 	}
 
+	
 	public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide
     	
@@ -51,7 +53,9 @@ public class Reine  extends Piece {
     	
     	e.setPiece(posFou, new Reine(Couleur.BLANC, posFou));    	
     	e.setPiece(0,0, new Cavalier(Couleur.NOIR, 0,0));
-    	ArrayList<Position> a = e.getPiece(posFou).listeCoupValide(e);
+    	
+    	((Reine) e.getPiece(posFou)).calculCoups(e);
+    	ArrayList<Position> a = e.getPiece(posFou).getListeCoups();
     	
     	for (Position p : a) {
     		System.out.println(p);

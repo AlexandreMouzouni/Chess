@@ -4,23 +4,17 @@ import java.util.ArrayList;
 
 import com.modeliosoft.modelio.javadesigner.annotations.objid;
 
-@objid ("7d04237b-e42b-4a58-9729-9ab91afeee7c")
 public class Cavalier extends Piece {
 	public Cavalier(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
 	}
-
-	public ArrayList<Position> listeCoupValide(Echiquier echiquier) {
-		return this.listeCoupValide();
+	
+	public void calculCoups(Echiquier e, Partie p) {
+		this.calculCoups();
 	}
 	
-    @objid ("667cac35-5223-487f-a37d-c2a99a0a0cb4")
-    /*
-     * Retourne la liste des déplacements corrects pour ce Cavalier.
-     */
-    public ArrayList<Position> listeCoupValide() {
+    public void calculCoups() {
     	Position[] deplacements = new Position[8];
-    	ArrayList<Position> listeCoupValide = new ArrayList<Position>();
     	Position positionDepart = super.getPosition();
     	
     	deplacements[0] = new Position( 1,  2);
@@ -35,18 +29,17 @@ public class Cavalier extends Piece {
     	for (int i = 0; i < 8; i++) {
     		Position nouvellePosition = positionDepart.addition(deplacements[i]);
     		if (Position.positionValide( nouvellePosition ) ) {
-    			listeCoupValide.add(nouvellePosition);
+    			super.addCoup(nouvellePosition);
     		}
     	}
-    	
-        return listeCoupValide;
     }
     
     public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide
     	
     	e.setPiece(0, 0, new Cavalier(Couleur.BLANC, 0, 0));
-    	ArrayList<Position> a = e.getPiece(0, 0).listeCoupValide(e);
+    	((Cavalier) e.getPiece(0, 0)).calculCoups();
+    	ArrayList<Position> a = e.getPiece(0, 0).getListeCoups();
     	
     	for (Position p : a) {
     		System.out.println(p);
