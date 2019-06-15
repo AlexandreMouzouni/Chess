@@ -44,4 +44,10 @@ public abstract class Piece {
         // Automatically generated method. Please delete this comment before entering specific code.
         return this.couleur ;
     }
+    
+    /**
+     * Crée un String affichable pour chaque pièce.
+     * @return
+     */
+    public abstract String affiche();
 }

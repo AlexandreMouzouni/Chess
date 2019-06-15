@@ -1,0 +1,12 @@
+package jeu;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Partie {
+	public ArrayList<Echiquier> historique ;
+	
+	public  addEtat
+	
+}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Roi extends Piece {
 	public boolean estDeplace = false;
+	public boolean estEchec = false;
 	
 	public Roi(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
@@ -27,14 +28,22 @@ public class Roi extends Piece {
 			boolean estBloque  = false; //????
 			
 			nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
-			// Est-ce que la position générée n'est pas hors de l'échiquier?
+			// Est-ce que la position gÃ©nÃ©rÃ©e n'est pas hors de l'Ã©chiquier?
 			if (Position.positionValide(nouvellePosition)) {
 					
 				super.addCoup(nouvellePosition);
 				}
 			}
 	}
-
+	public String affiche() {
+		boolean couleurPion = super.getCouleur(); 
+		if(super.getCouleur() == Couleur.NOIR){
+			return "â™š";
+		}
+			else {
+				return "â™”";
+			}
+    }
 	public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide
     	

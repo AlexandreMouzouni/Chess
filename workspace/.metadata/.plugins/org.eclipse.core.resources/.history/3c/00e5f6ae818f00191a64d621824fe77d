@@ -1,0 +1,31 @@
+package jeu;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Partie {
+	private ArrayList<Echiquier> historique;
+	private Echiquier tempUndo;
+	
+	public void addEtat(Echiquier e) {
+		historique.add(e);
+	}
+	
+	public Echiquier getEtat(int i) {
+		return historique.get(i);
+	}
+	
+	public boolean undo() {
+		// On ne peut pas undo le premier coup.
+		if (historique.size() == 1) {
+			return false;
+		}
+		
+		Echiquier e = historique.remove(hisorique.size() - 1);
+	}
+	
+	public void redo() {
+		
+	}
+}

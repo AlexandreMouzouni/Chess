@@ -9,6 +9,11 @@ public class Position {
 		this.y = unY;
 	}
 	
+	public Position( Position p) {
+		this.x = p.x;
+		this.y = p.y;
+	}
+	
 	public Position addition(Position pos) {
 		return new Position(this.x + pos.x, this.y + pos.y);
 	}
@@ -31,7 +36,7 @@ public class Position {
 	}
 	
 	public String toString() {
-		return "[ " + this.x + ", " + this.y + "]";
+		return "[" + this.x + ", " + this.y + "]";
 	}
 }
 

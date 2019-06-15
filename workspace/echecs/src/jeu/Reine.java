@@ -45,6 +45,15 @@ public class Reine  extends Piece {
 		}
 	}
 
+	public String affiche() {
+		boolean couleurPion = super.getCouleur(); 
+		if(super.getCouleur() == Couleur.NOIR){
+			return "♛";
+		}
+			else {
+				return "♕";
+			}
+	}
 	
 	public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide

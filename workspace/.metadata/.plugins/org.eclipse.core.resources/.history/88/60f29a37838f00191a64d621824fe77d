@@ -1,0 +1,43 @@
+package jeu;
+
+public class Jeu {
+	private Joueur[] joueurs;
+	private Partie partie;
+
+	
+	public Jeu() {  
+		this.partie = new Partie();
+		// on a itinialise ici dans le constructeur car c'est unique a l'objet et nn a tous les objets
+		this.joueurs = new Joueur[]{ new Joueur(Couleur.BLANC),new Joueur(Couleur.NOIR) };
+	}
+	/**
+	 * Point d'entrée.
+	 */
+	public void run() {
+		// Menu tout ca 
+		boolean partieFinie = false;
+		
+		// Le constructeur Echiquier génère un nouvel échiquier 
+		// (l'état de base) avec toutes les pièces placées.
+		Echiquier etatInitial = new Echiquier();
+		partie.addEtat(etatInitial);
+		
+		while (! partieFinie) {
+			// Obtenir l'état actuel du jeu
+			Echiquier etatActuel = partie.getEtat( partie.size() - 1 );
+			
+			// TODO: changer l'interface
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					Piece p = this.partie
+				}
+			}
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		Jeu j = new Jeu();
+		j.run();
+	}
+}

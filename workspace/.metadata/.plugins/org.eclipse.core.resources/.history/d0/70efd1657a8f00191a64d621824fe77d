@@ -1,0 +1,25 @@
+package jeu;
+
+public class Jeu {
+	private Joueur[] joueurs;
+	private Partie partie;
+	
+	public Jeu() {  
+		this.partie  = new Partie();
+		this.joueurs = { new Joueur(BLANC), new Joueur(NOIR) };
+	}
+	
+	/**
+	 * Point d'entrée.
+	 */
+	public void run() {
+		// Menu tout ca 
+		
+		
+	}
+	
+	public static void main(String[] args) {
+		Jeu j = new Jeu();
+		j.run();
+	}
+}

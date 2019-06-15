@@ -22,14 +22,84 @@ public class Echiquier {
     private boolean[] roquesPossibles = {true, true, true, true};
     // Le tour actuel. Le premier tour est toujours aux blancs.
     private boolean tourAJouer = Couleur.BLANC;
-    private int[] enPassant = new int[2]; // Position en passant
+	private Position enPassant; // Position en passant
     
-    public Echiquier() {
-    	//init();
+	public Echiquier() {
+    	init();
     }
     
-    // Constructeur vide (de test).
+    /**
+     * Constructeur par copie.
+     * @param echiquier L'échiquier a copier.
+     */
+    public E	chiquier(Echiquier e) {
+    	Piece[][] newPlateau = new Piece[8][8];
+    	boolean[] newRoquesPossibles = new boolean[4];
+    	
+    	this.tourAJouer = e.isTourAJouer();
+    	this.enPassant = new Position(e.getEnPassant());
+    	
+    	for 
+    }
+    
+    public boolean[] getRoquesPossibles() {
+		return roquesPossibles;
+	}
+
+	public void setRoquesPossibles(boolean[] roquesPossibles) {
+		this.roquesPossibles = roquesPossibles;
+	}
+
+	public void setPlateau(Piece[][] plateau) {
+		this.plateau = plateau;
+	}
+
+	// Echiquier vide
+    // A UTILISER UNIQUEMENT POUR LES TESTS (unitaires pour les pièces)
     protected Echiquier(boolean test) {}
+    /*
+     * Initialise l'échiquer avec un plateau. La position de départ est toujours la même.
+     * 
+     *   0 1 2 3 4 5 6 7
+     * 0 ♜ ♞ ♝ ♚ ♛ ♝ ♞ ♜
+     * 1 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
+     * 2
+     * 3
+     * 4
+     * 5
+     * 6 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙
+     * 7 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
+     */
+    
+    
+    public void init() {
+    setPiece(0,0, new Tour(Couleur.NOIR, 0,0));
+    setPiece(1,0, new Cavalier(Couleur.NOIR, 1,0));
+    setPiece(2,0, new Fou(Couleur.NOIR, 2,0));
+    setPiece(3,0, new Roi(Couleur.NOIR, 3,0));
+    setPiece(4,0, new Reine(Couleur.NOIR, 4,0));
+    setPiece(5,0, new Fou(Couleur.NOIR, 5,0));
+    setPiece(6,0, new Cavalier(Couleur.NOIR, 6,0));
+    setPiece(7,0, new Tour(Couleur.NOIR, 7,0));
+    
+    	for (int i =0; i<8;i++) {
+    		setPiece(i,1, new Pion(Couleur.NOIR, i,1));
+    	}
+    	
+    	setPiece(0,7, new Tour(Couleur.BLANC, 0,7));
+        setPiece(1,7, new Cavalier(Couleur.BLANC, 1,7));
+        setPiece(2,7, new Fou(Couleur.BLANC, 2,7));
+        setPiece(3,7, new Roi(Couleur.BLANC, 3,7));
+        setPiece(4,7, new Reine(Couleur.BLANC, 4,7));
+        setPiece(5,7, new Fou(Couleur.BLANC,5,7));
+        setPiece(6,7, new Cavalier(Couleur.BLANC, 6,7));
+        setPiece(7,7, new Tour(Couleur.BLANC, 7,7));
+        
+        for (int i =0; i<8;i++) {
+    		setPiece(i,6, new Pion(Couleur.BLANC, i,6));
+    	}
+    	//this.setPiece(0, 0, new Tour);
+    }
     
     public Piece[][] getPlateau() {
     	return this.plateau;
@@ -39,8 +109,16 @@ public class Echiquier {
     	return this.getPiece(pos.x, pos.y);
     }
     
-    public Piece getPiece(int ligne, int colonne) {
-    	return this.plateau[ligne][colonne];
+    public Piece getPiece(int x, int y) {
+    	// Représentation matricielle: les tableaux sont orientés de l'autre sens
+    	//, cad on a un tableau composé de tableaux.
+    	// [ [0, 1, 2, 3, 4, 5, 6, 7]
+    	//   [0, 1, 2, 3, 4, 5, 6, 7] ...
+    	//   ...
+    	// ..[0, 1, 2, 3, 4, 5, 6, 7] ]
+    	// En matricielle, quand on fait tab[0][1] , on accède à la case a x = 1 et y = 0.
+    	// Les nombres sont donc dans le sens inversés.
+    	return this.plateau[y][x];
     }
     
     public boolean containsPiece(Position pos) {
@@ -59,27 +137,55 @@ public class Echiquier {
     	this.setPiece(pos.x, pos.y, p);
     }
     
-    public void setPiece(int ligne, int colonne, Piece p) {
-    	this.plateau[ligne][colonne] = p;
+    public void setPiece(int x, int y, Piece p) {
+    	this.plateau[y][x] = p;
     }
-    /*
-     * Initialise l'échiquer avec un plateau. La position de départ est toujours la même.
-     * 
-     *   0 1 2 3 4 5 6 7
-     * 0 ♜ ♞ ♝ ♚ ♛ ♝ ♞ ♜
-     * 1 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
-     * 2
-     * 3
-     * 4
-     * 5
-     * 6 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙
-     * 7 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
+    
+    public Piece prendrePiece(Position pos) {
+    	Piece p = this.getPiece(pos);
+    	this.setPiece(pos, null);
+    	return p;
+    }
+    
+    /**
+     * Fait un déplacement avec un coup.
      */
-    public void init() {
-    	return;
-    	//this.setPiece(0, 0, new Tour);
+    public boolean deplacementValide(Coup c) {
+    	Position positionDepart = c.pos1;
+    	Position positionArrivee = c.pos2;
+    	
+    	// Si ca ne contient pas de pièce, déplacement impossible
+    	if ( ! this.containsPiece(positionDepart)) {
+    		return false;
+    	}
+    	
+    	// On ne peut pas capturer une pièce de notre couleur
+    	if ( this.containsPiece(positionDepart)
+    			&& this.getPiece(positionDepart).getCouleur() == this.getPiece(positionArrivee).getCouleur() ) {
+    		return false;
+    	}
+    	
+    	return true;
     }
-    public void afficher() {
+    
+    /**
+     * Fait un déplacement avec un coup.
+     */
+    public Echiquier deplacement(Coup c) {
+    	Position positionDepart = c.pos1;
+    	Position positionArrivee = c.pos2;
+    	
+    	Echiquier echiquierDeplacement = new Echiquier(this);
+    	
+    	// Prendre la pièce et la supprimer..
+    	Piece pieceADeplacer = echiquierDeplacement.prendrePiece(positionDepart);
+    	// et la mettre à la position d'arrivée
+    	echiquierDeplacement.setPiece(positionArrivee, pieceADeplacer);
+    	
+    	return echiquierDeplacement;
+    }
+
+    public String afficher() {
     	Piece[][] plateau = this.getPlateau();
     	
     	String s = "";
@@ -88,21 +194,44 @@ public class Echiquier {
     		for (int j=0; j<plateau[i].length;j++) {
     			
     			if (plateau[i].length -1 ==j) {
-    				s +=  plateau[i][j];
+    				if (plateau[i][j] != null) {
+    					s +=  plateau[i][j].affiche();
+    				} else {
+    					s += " ";
+    				}
     			}
     			else {
-    				s +=  plateau[i][j]+" ";
+    				if (plateau[i][j] != null) {
+	    				s +=  plateau[i][j].affiche()+" ";
+	    			} else {
+						s += " ";
+					}
     			}
     		}
     		s = s+ "\n";
     	}
-    	
-    	System.out.println(s);
+    	return s;
     }
-    //public Echiquier deplacement(int xDepart, int yDepart, int xArrivee, int yArrivee) {}
+    
+    public boolean isTourAJouer() {
+		return tourAJouer;
+	}
+
+	public void setTourAJouer(boolean tourAJouer) {
+		this.tourAJouer = tourAJouer;
+	}
+    
+    public Position getEnPassant() {
+		return enPassant;
+	}
+
+	public void setEnPassant(Position enPassant) {
+		this.enPassant = enPassant;
+	}
+
     
     public static void main(String[] args) {
     	Echiquier e = new Echiquier();
-    	e.afficher();
+    	System.out.println(e.afficher());
     }
 }

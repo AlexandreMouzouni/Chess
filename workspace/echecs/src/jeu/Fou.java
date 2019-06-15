@@ -32,7 +32,7 @@ public class Fou  extends Piece {
 			while (Position.positionValide(nouvellePosition) && estBloque == false ) {
 				nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
 				
-				// Est-ce que la position gÈnÈrÈe n'est pas hors de l'Èchiquier?
+				// Est-ce que la position g√©n√©r√©e n'est pas hors de l'√©chiquier?
 				if (Position.positionValide(nouvellePosition)) {
 					if (e.containsPiece(nouvellePosition)){
 						estBloque = true;
@@ -44,6 +44,15 @@ public class Fou  extends Piece {
 		}
 	}
 
+	public String affiche() {
+		boolean couleurPion = super.getCouleur(); 
+		if(super.getCouleur() == Couleur.NOIR){
+			return "‚ôù";
+		}
+			else {
+				return "‚ôó";
+			}
+	}
 	public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide
     	
