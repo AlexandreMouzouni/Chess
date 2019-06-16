@@ -62,15 +62,22 @@ public class Jeu {
 			}
 			*/
 			Coup coup = this.demanderCoup();
-			
+
 			Echiquier newEtat;
 			// Cas spécial: le roque fait deux déplacements en un coup.
 			int roque = this.testRoque(coup);
 			System.out.println(roque);
-			if (roque != 0) {
+			
+			// Cas spécial: la promotion
+			if (this.checkPromotion(coup)) {
+				Scanner sc = new Scanner(System.in);
+				int typePiece = this.demanderPiecePromotion();
+				
+				newEtat = e.promotion(coup, typePiece);
+			} else if (roque != 0) {
 				System.out.println("coup roque");
 				System.out.println(coup);
-				newEtat = this.roque(roque, coup);
+				newEtat = this.roque(roque, coup); // Au niveau de la partie car on crée deux coups.
 			} else {
 				newEtat = e.deplacement(coup);
 			}
@@ -230,6 +237,47 @@ public class Jeu {
 			return temp.deplacement(coupTour);
 		}
 		return null;
+	}
+	
+	public boolean checkPromotion(Coup c) {
+		Position p1 = c.pos1;
+		Position p2 = c.pos2;
+		
+		Piece p = e.getPiece(p1);
+		
+		if (! (p instanceof Pion)) {
+			return false;
+		}
+		
+		if (p2.y == 7 && p.getCouleur() == Couleur.BLANC) {
+			return true;
+		} else if (p2.y == 0 && p.getCouleur() == Couleur.NOIR) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public int demanderPiecePromotion() {
+		System.out.println("Promouvoir en [tapez le chiffre]:");
+		System.out.println("Cavalier (1)");
+		System.out.println("Fou (2)");
+		System.out.println("Tour (3)");
+		System.out.println("Reine (4)");
+		
+		Scanner sc = new Scanner(System.in);
+		
+		while (true) {
+			String s = sc.nextLine();
+			
+			if (s.length() == 1) {
+				int num = Integer.parseInt(s);
+						
+				if (num > 0 && num <= 4) {
+					return num;
+				}
+			}
+		}
 	}
 	
 	public static void main(String[] args) {

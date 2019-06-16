@@ -101,6 +101,9 @@ public class Echiquier {
         for (int i =0; i<8;i++) {
     		setPiece(i,6, new Pion(Couleur.NOIR, i,6));
     	}
+        
+		setPiece(7,6, new Pion(Couleur.BLANC, 7,6));
+		setPiece(7,7, null);
     }
     
     public Piece[][] getPlateau() {
@@ -373,6 +376,40 @@ public class Echiquier {
     	}
     	
     	System.out.println(s);
+    }
+    
+    public Echiquier promotion(Coup c, int typeP) {
+    	Position positionD = c.pos1;
+    	Position positionA = c.pos2;
+    	
+    	Echiquier echiquierDeplacement = new Echiquier(this);
+    	Piece piecePromue = null;
+    	// Déterminer la pièce promue
+    	if (typeP == 1) {
+    		piecePromue = new Cavalier(this.getTourAJouer(), positionA.x, positionA.y );
+    	} else if (typeP == 2) {
+    		piecePromue = new Fou(this.getTourAJouer(), positionA.x, positionA.y );
+    	} else if (typeP == 3) {
+    		piecePromue = new Tour(this.getTourAJouer(), positionA.x, positionA.y );
+    	} else if (typeP == 4) {
+    		piecePromue = new Reine(this.getTourAJouer(), positionA.x, positionA.y );
+    	}
+    	
+    	// Prendre la pièce et la supprimer..
+    	echiquierDeplacement.prendrePiece(positionD);
+    	// et mettre la nouvelle piece à la position d'arrivéee
+    	echiquierDeplacement.setPiece(positionA, piecePromue); // Association bidirectionnele: Echiquier -> Piece..
+    	// Piece -> Echiquier est fait car on vient de créer la pièce
+    	
+    	// Dans l'ancien échiquier, stocker le coup qui va suivre.
+    	// On pourra ainsi obtenir sa notation sous n'importe quelle forme.
+    	// Dans Partie, on aura ainsi:
+    	//
+    	//   E0 (coup vide) -> E1 (Coup 1) -> ... -> EN (coup n)
+    	// De l'échiquier E0, on peut utiliser Coup 1 pour passer à E1.
+    	echiquierDeplacement.setCoupPrecedant(c);
+    	
+    	return echiquierDeplacement;
     }
     
     public boolean getTourAJouer() {
