@@ -8,10 +8,10 @@ public class Pion extends Piece {
 	
     public Pion(boolean uneCouleur, int x, int y) {
     	super(uneCouleur, x, y);
-    	if(y == 1 && uneCouleur == Couleur.NOIR){
+    	if(y == 1 && uneCouleur == Couleur.BLANC){
     		setPremierRang(true);
     	}
-    	else if(y == 6 && uneCouleur == Couleur.BLANC) {
+    	else if(y == 6 && uneCouleur == Couleur.NOIR) {
     		setPremierRang(true);
     	}
     }
@@ -118,10 +118,10 @@ public class Pion extends Piece {
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
 		if(couleurPion == Couleur.NOIR){
-			return "♟";
+			return "p";
 		}
 		else {
-			return "♙";	
+			return "P";	
 		}
 			
 	}

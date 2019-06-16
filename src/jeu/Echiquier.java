@@ -15,6 +15,8 @@ public class Echiquier {
     // Le coup précédant.
     private Coup coupPrecedant;
     // Les roques possibles. Au début, tout les roques sont possibles.
+    // Grand roque blanc, petit roque blanc,
+    // grand roque noir, petit roque noir.
     private boolean[] roquesPossibles = {true, true, true, true};
     // Le tour actuel. Le premier tour est toujours aux blancs.
     private boolean tourAJouer = Couleur.BLANC;
@@ -110,15 +112,7 @@ public class Echiquier {
     }
     
     public Piece getPiece(int x, int y) {
-    	// Représentation matricielle: les tableaux sont orientés de l'autre sens
-    	//, cad on a un tableau composé de tableaux.
-    	// [ [0, 1, 2, 3, 4, 5, 6, 7]
-    	//   [0, 1, 2, 3, 4, 5, 6, 7] ...
-    	//   ...
-    	// ..[0, 1, 2, 3, 4, 5, 6, 7] ]
-    	// En matricielle, quand on fait tab[0][1] , on accède à  la case a x = 1 et y = 0.
-    	// Les nombres sont donc dans le sens inversés.
-    	return this.plateau[y][x];
+    	return this.plateau[7-y][x];
     }
     
     public boolean containsPiece(Position pos) {
@@ -138,7 +132,7 @@ public class Echiquier {
     }
     
     public void setPiece(int x, int y, Piece p) {
-    	this.plateau[y][x] = p;
+    	this.plateau[7-y][x] = p;
     }
     
     public Piece prendrePiece(Position pos) {
@@ -208,6 +202,141 @@ public class Echiquier {
     	
     	return echiquierDeplacement;
     }
+    
+    public void updateRoques() {
+    	getRoquesPossibles()[0] = this.grandRoqueBlanc();
+		getRoquesPossibles()[1] = this.petitRoqueBlanc();
+		getRoquesPossibles()[2] = this.grandRoqueNoir();
+		getRoquesPossibles()[3] = this.petitRoqueNoir();
+		
+    	for (boolean bool : getRoquesPossibles()) {
+    		System.out.println(bool);
+    	}
+    }
+    
+    public boolean petitRoqueBlanc() {
+    	
+		Position posRoiBlanc = new Position(4, 0);
+		Position posTourBlanc = new Position(7, 0);
+		
+		if (! this.containsPiece(posRoiBlanc)) {
+			return false;
+		}
+		if (! (this.getPiece(posRoiBlanc) instanceof Roi) ) {
+			return false;
+		}
+		if (! this.containsPiece(posTourBlanc)) {
+			return false;
+		}
+		if (! (this.getPiece(posTourBlanc) instanceof Tour) ) {
+			return false;
+		}
+		
+		Roi r = (Roi) this.getPiece(posRoiBlanc) ;
+		Tour t = (Tour) this.getPiece(posTourBlanc) ;
+		
+		if ( r.premierDeplacement == false || t.premierDeplacement == false ) {
+			return false;
+		}
+		if ( this.containsPiece(5,0) || this.containsPiece(6,0) ) {
+			return false;
+		}
+		
+		return true;
+    }
+    
+    public boolean grandRoqueBlanc() {
+    	
+		Position posRoiBlanc = new Position(4, 0);
+		Position posTourBlanc = new Position(0, 0);
+		
+		if (! this.containsPiece(posRoiBlanc)) {
+			return false;
+		}
+		if (! (this.getPiece(posRoiBlanc) instanceof Roi) ) {
+			return false;
+		}
+		if (! this.containsPiece(posTourBlanc)) {
+			return false;
+		}
+		if (! (this.getPiece(posTourBlanc) instanceof Tour) ) {
+			return false;
+		}
+		
+		Roi r = (Roi) this.getPiece(posRoiBlanc) ;
+		Tour t = (Tour) this.getPiece(posTourBlanc) ;
+		
+		if ( r.premierDeplacement == false || t.premierDeplacement == false ) {
+			return false;
+		}
+		if ( this.containsPiece(3,0) || this.containsPiece(2,0) || this.containsPiece(1,0) ) {
+			return false;
+		}
+		
+		return true;
+    }
+    
+    public boolean petitRoqueNoir() {
+    	
+		Position posRoiNoir = new Position(4, 7);
+		Position posTourNoir = new Position(7, 7);
+		
+		if (! this.containsPiece(posRoiNoir)) {
+			return false;
+		}
+		if (! (this.getPiece(posRoiNoir) instanceof Roi) ) {
+			return false;
+		}
+		if (! this.containsPiece(posTourNoir)) {
+			return false;
+		}
+		if (! (this.getPiece(posTourNoir) instanceof Tour) ) {
+			return false;
+		}
+		
+		Roi r = (Roi) this.getPiece(posRoiNoir) ;
+		Tour t = (Tour) this.getPiece(posTourNoir) ;
+		
+		if ( r.premierDeplacement == false || t.premierDeplacement == false ) {
+			return false;
+		}
+		if ( this.containsPiece(5,7) || this.containsPiece(6,7) ) {
+			return false;
+		}
+		
+		return true;
+    }
+    
+    public boolean grandRoqueNoir() {
+    	
+		Position posRoiNoir = new Position(4, 7);
+		Position posTourNoir = new Position(0, 7);
+		
+		if (! this.containsPiece(posRoiNoir)) {
+			return false;
+		}
+		if (! (this.getPiece(posRoiNoir) instanceof Roi) ) {
+			return false;
+		}
+		if (! this.containsPiece(posTourNoir)) {
+			return false;
+		}
+		if (! (this.getPiece(posTourNoir) instanceof Tour) ) {
+			return false;
+		}
+		
+		Roi r = (Roi) this.getPiece(posRoiNoir) ;
+		Tour t = (Tour) this.getPiece(posTourNoir) ;
+		
+		if ( r.premierDeplacement == false || t.premierDeplacement == false ) {
+			return false;
+		}
+		if ( this.containsPiece(3,7) || this.containsPiece(2,7) || this.containsPiece(1,7) ) {
+			return false;
+		}
+		
+		return true;
+    }
 
     public void afficher() {
     	Piece[][] plateau = this.getPlateau();
@@ -218,9 +347,9 @@ public class Echiquier {
     	s += "  a b c d e f g h\n";
     	
     	// Affichage dans le sens inverse
-    	for(int i=7; i >= 0 ;i--) {
+    	for(int i=0; i<plateau.length ;i++) {
     		// Numéro de ligne
-			s += 7 - (i - 1) + " ";
+			s += 7 - (i-1) + " ";
     		
     		for (int j=0; j<plateau[i].length;j++) {
     			
@@ -233,13 +362,14 @@ public class Echiquier {
     			}
     			else {
     				if (plateau[i][j] != null) {
-	    				s += plateau[i][j].affiche()+" ";
+	    				s += plateau[i][j].affiche()+ "|";
 	    			} else {
-						s += " ";
+						s += " |";
 					}
     			}
     		}
     		s = s+ "\n";
+    		s += "  -+-+-+-+-+-+-+-\n";
     	}
     	
     	System.out.println(s);

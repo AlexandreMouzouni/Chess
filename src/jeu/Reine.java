@@ -55,10 +55,10 @@ public class Reine  extends Piece {
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
 		if(couleurPion == Couleur.NOIR){
-			return "♛";
+			return "d";
 		}
 		else {
-			return "♕";
+			return "D";
 		}
 	}
 	

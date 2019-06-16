@@ -53,10 +53,10 @@ public class Fou  extends Piece {
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
 		if(couleurPion == Couleur.NOIR){
-			return "♝";
+			return "f";
 		}
 		else {
-			return "♗";
+			return "F";
 		}
 	}
 	public static void main(String args[]) {

@@ -3,7 +3,16 @@ package jeu;
 import java.util.ArrayList;
 
 public class Tour extends Piece {
-	public boolean estDeplace = false;
+	public boolean premierDeplacement = true;
+	
+	@Override
+	// Si la pièce se déplace pour la première fois (avec setPosition),
+	// alors elle n'est plus au premier rang
+	// On ne peut ainsi plus faire de roques dès que la tour est déplacé
+	public void setPosition(Position unePosition) {
+    	super.setPosition(unePosition);
+    	this.premierDeplacement = false;
+    }
 	
 	public Tour(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
@@ -50,10 +59,10 @@ public class Tour extends Piece {
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
 		if(couleurPion == Couleur.NOIR){
-			return "♜";
+			return "t";
 		}
 		else {
-			return "♖";
+			return "T";
 		}
 	}
 	
