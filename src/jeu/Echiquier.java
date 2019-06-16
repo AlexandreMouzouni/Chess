@@ -32,7 +32,7 @@ public class Echiquier {
     public Echiquier(Echiquier e) {
     	this.plateau = new Piece[8][8];
     	this.roquesPossibles = new boolean[4];
-    	this.tourAJouer = e.getTourAJouer();
+    	this.tourAJouer = e.getJoueurActuel();
     	
     	for (int i = 0; i < e.getPlateau().length; i++) {
     		for (int j = 0; j < e.getPlateau()[i].length; j++) {
@@ -101,9 +101,6 @@ public class Echiquier {
         for (int i =0; i<8;i++) {
     		setPiece(i,6, new Pion(Couleur.NOIR, i,6));
     	}
-        
-		setPiece(7,6, new Pion(Couleur.BLANC, 7,6));
-		setPiece(7,7, null);
     }
     
     public Piece[][] getPlateau() {
@@ -162,13 +159,12 @@ public class Echiquier {
     	if ( p.getCouleur() != this.tourAJouer ) {
     		return false;
     	}
-    	
-    	/*
+    
 		ArrayList<Position> a = p.getListeCoups();
 		System.out.println("--");
 		for (Position pos : a) {
 			System.out.println(pos);
-		}*/
+		}
     	
     	// Est-ce que le déplacement est dans la liste de déplacement de la pièce sélectionnée?
     	// Si elle n'est pas contenue dedans, le coup est impossible
@@ -212,9 +208,10 @@ public class Echiquier {
 		getRoquesPossibles()[2] = this.grandRoqueNoir();
 		getRoquesPossibles()[3] = this.petitRoqueNoir();
 		
+		/*
     	for (boolean bool : getRoquesPossibles()) {
     		System.out.println(bool);
-    	}
+    	}*/
     }
     
     public boolean petitRoqueBlanc() {
@@ -386,13 +383,13 @@ public class Echiquier {
     	Piece piecePromue = null;
     	// Déterminer la pièce promue
     	if (typeP == 1) {
-    		piecePromue = new Cavalier(this.getTourAJouer(), positionA.x, positionA.y );
+    		piecePromue = new Cavalier(this.getJoueurActuel(), positionA.x, positionA.y );
     	} else if (typeP == 2) {
-    		piecePromue = new Fou(this.getTourAJouer(), positionA.x, positionA.y );
+    		piecePromue = new Fou(this.getJoueurActuel(), positionA.x, positionA.y );
     	} else if (typeP == 3) {
-    		piecePromue = new Tour(this.getTourAJouer(), positionA.x, positionA.y );
+    		piecePromue = new Tour(this.getJoueurActuel(), positionA.x, positionA.y );
     	} else if (typeP == 4) {
-    		piecePromue = new Reine(this.getTourAJouer(), positionA.x, positionA.y );
+    		piecePromue = new Reine(this.getJoueurActuel(), positionA.x, positionA.y );
     	}
     	
     	// Prendre la pièce et la supprimer..
@@ -412,7 +409,7 @@ public class Echiquier {
     	return echiquierDeplacement;
     }
     
-    public boolean getTourAJouer() {
+    public boolean getJoueurActuel() {
 		return tourAJouer;
 	}
 
@@ -432,4 +429,99 @@ public class Echiquier {
     	Echiquier e = new Echiquier();
     	e.afficher();
     }
+
+	public boolean verifierEchec() {
+		// Recherche du roi
+		Roi r;
+		Position posRoi = null;
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.containsPiece(i, j)) {
+					Piece p = this.getPiece(i, j);
+					if (p.getCouleur() == this.getJoueurActuel() 
+							&& p instanceof Roi) {
+						r = (Roi) p;
+						posRoi = r.getPosition();
+					}
+				}
+			}
+		}
+		
+		boolean couleurEnnemie = ! this.getJoueurActuel();
+		System.out.println(posRoi + "+++");
+		
+		// Vérifier qu'aucune pièce ennemie ne possède le roi dans ses déplacement possibles
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.containsPiece(i, j)) {
+					Piece p = this.getPiece(i, j); // Obtenir la pi�ce..
+					
+					if (p.getCouleur() == couleurEnnemie) {
+						ArrayList<Position> a = p.getListeCoups();
+						
+						if (a.contains(posRoi)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		// Aucune pièce ne possède le roi dans ses déplacements.
+		return false;
+	}
+
+	public boolean deplacementPossibleHorsEchec() {
+		// Pour chaque pièce alliée, vérifier qu'un de ses déplacements ne metterais
+		// pas le roi hors échec (y inclus le roi lui-même
+		// En effet, une tour peut bloquer l'échec du roi, par exemple
+		
+		boolean couleurAlliee = this.getJoueurActuel();
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.containsPiece(i, j)) {
+					Piece p = this.getPiece(i, j); // Obtenir la pi�ce..
+					Position posInitiale = p.getPosition();
+					
+					if (p.getCouleur() == couleurAlliee) {
+						if (p.getListeCoups().size() > 0 ) { // Si la piece peut jouer..
+							System.out.println(p);
+							ArrayList<Position> a = p.getListeCoups();
+							
+							System.out.println("* * *");
+							System.out.println(p.getPosition());
+							for (Position posn : a) {
+								System.out.println(posn);
+							}
+							System.out.println("* --- *");
+							
+							// Pour chacun des coups possibles...
+							// .. on regarde un état en avant, et voit si cet état est encore
+							// en échec
+							for (Position posnPossible : a) {
+								System.out.println(p.getPosition());
+								System.out.println(posnPossible);
+								Coup c = new Coup(p.getPosition(), posnPossible);
+								Echiquier etatPossible = this.deplacement(c);
+								
+								// Au moins une possibilité nous sort d'échec.
+								if (etatPossible.verifierEchec() == false) {
+									System.out.println("plus en échec et mat!!!");
+									return true;
+								}
+								
+								this.getPiece(posInitiale).setPosition(posInitiale);
+								System.out.println("---");
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		// Aucune possibilité ne nous sort d'échec. On est en échec et mat.
+		return false;
+	}
 }

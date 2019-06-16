@@ -56,14 +56,14 @@ public class Roi extends Piece {
 	}
 	
 	public void calculCoupsRoques(Echiquier e) {
-		if (e.getTourAJouer() == Couleur.BLANC) {
+		if (e.getJoueurActuel() == Couleur.BLANC) {
 			if (e.getRoquesPossibles()[0] == true) { // Petit roque blanc
 				super.addCoup(new Position(2,0));
 			} 
 			if (e.getRoquesPossibles()[1] == true) { // Grand roque blanc
 				super.addCoup(new Position(6,0));
 			}
-		} else if (e.getTourAJouer() == Couleur.NOIR) {
+		} else if (e.getJoueurActuel() == Couleur.NOIR) {
 			if (e.getRoquesPossibles()[2] == true) { // Petit roque noir
 				super.addCoup(new Position(2,7));
 			} 

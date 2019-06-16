@@ -17,8 +17,8 @@ public class Jeu {
 	 * Point d'entr�e.
 	 */
 	public void run() {
-		// Menu tout ca 
 		boolean partieFinie = false;
+		int gagnant;
 		
 		// Le constructeur Echiquier g�n�re un nouvel �chiquier 
 		// (l'état de base) avec toutes les pi�ces plac�es.
@@ -48,52 +48,68 @@ public class Jeu {
 				}
 			}
 			
-			/*
-			// obtenir le roi de la couleur qui correspond
-			Roi r = e.getRoi(Couleur.BLANC);
-			// Roi en échec?
-			boolean echec = e.verifierEchec(couleur);
-			// Déplacement du roi impossible?
-			boolean deplacementPossible = e.deplacementRoiPossible(couleur);
-			
-			if (echec && (! deplacementPossible)) {
-				partieFinie = true;
-				gagnant = joueur;
+			/* Vérification Echec, Echec et Mat, Pat */
+			if (e.verifierEchec()) { // Est-ce que une pièce adverse possède le roi dans son chemin?
+				if ( ! (e.deplacementPossibleHorsEchec() ) ) {// Y'a-t-il un déplacement mettant hors échec?
+					// Si non, c'est échec et mat
+					gagnant = this.getGagnant(); // Le gagnant est le joueur adverse
+					partieFinie = true;
+					this.annoncerWinneur(gagnant);
+				} else {
+				// Si oui, c'est échec et on l'annonce
+					this.annoncerEchec();
+				}
 			}
-			*/
-			Coup coup = this.demanderCoup();
-
-			Echiquier newEtat;
-			// Cas spécial: le roque fait deux déplacements en un coup.
-			int roque = this.testRoque(coup);
-			System.out.println(roque);
-			
-			// Cas spécial: la promotion
-			if (this.checkPromotion(coup)) {
-				Scanner sc = new Scanner(System.in);
-				int typePiece = this.demanderPiecePromotion();
 				
-				newEtat = e.promotion(coup, typePiece);
-			} else if (roque != 0) {
-				System.out.println("coup roque");
-				System.out.println(coup);
-				newEtat = this.roque(roque, coup); // Au niveau de la partie car on crée deux coups.
-			} else {
-				newEtat = e.deplacement(coup);
-			}
+			// if e.deplacementPossible()
+			/*
+			if () {
+				// Si il n'y a aucun déplacement possible et qu'on est pas en échec, c'est pat
+				gagnant = 0;
+				partieFinie = true;
+				this.annoncerWinneur(gagnant
 			
-			// Changer de tour de joueur.
-			//newEtat.setTourAJouer( ! e.getTourAJouer() );
-			partie.addEtat(newEtat);
-			
-			// Vider les coups de chacune des pièces, pour pas de duplication
-			// On met ce code ici car certain calculs de coups ont besoin de l'�tat entier du jeu,
-			// comme le coup pr�c�dent
-			for (int i = 0; i < 8; i++) {
-				for (int j = 0; j < 8; j++) {
-					if (e.containsPiece(i, j)) {
-						Piece p = e.getPiece(i, j); // Obtenir la pi�ce..
-						p.clearListeCoups();
+				
+			/* Avancement d'un coup */
+			if (! partieFinie) {
+				Coup coup = this.demanderCoup();
+	
+				Echiquier newEtat;
+				
+				// Cas spécial: le roque fait deux déplacements en un coup.
+				int roque = this.testRoque(coup);
+				System.out.println(roque);
+				
+				// Cas spécial: la promotion
+				if (this.checkPromotion(coup)) { /* Promotion */
+					Scanner sc = new Scanner(System.in);
+					int typePiece = this.demanderPiecePromotion();
+					
+					newEtat = e.promotion(coup, typePiece);
+					
+				} else if (roque != 0) { /* Roque */
+					System.out.println("coup roque");
+					System.out.println(coup);
+					newEtat = this.roque(roque, coup); // Au niveau de la partie car on crée deux coups.
+					
+				} else { /* Coup normal */
+					newEtat = e.deplacement(coup);
+				}
+				
+				// Changer de tour de joueur.
+				newEtat.setTourAJouer( ! e.getJoueurActuel() );
+				// L'état actuel devient le nouvel état (tour de boucle suivant.)
+				partie.addEtat(newEtat);
+				
+				// Vider les coups de chacune des pièces, pour pas de duplication
+				// On met ce code ici car certain calculs de coups ont besoin de l'état entier du jeu,
+				// comme le coup précédent
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+						if (e.containsPiece(i, j)) {
+							Piece p = e.getPiece(i, j); // Obtenir la pi�ce..
+							p.clearListeCoups();
+						}
 					}
 				}
 			}
@@ -277,6 +293,33 @@ public class Jeu {
 					return num;
 				}
 			}
+		}
+	}
+	
+	public void annoncerEchec() {
+		if (e.getJoueurActuel() == Couleur.BLANC) {
+			System.out.println("Le joueur blanc est en échec");
+		} else {
+			System.out.println("Le joueur noir est en échec");
+		}
+	}
+	
+	public int getGagnant() {
+		if (e.getJoueurActuel() == Couleur.BLANC) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+	
+	public void annoncerWinneur(int num) {
+		// Doit renvoyer le joueur inverse
+		if (num == -1) { // -1 : blanc
+			System.out.println("Le winneur est le joueur noir");
+		} else if (num == 0) {
+			System.out.println("Il y a pat: égalité");
+		} else if (num == 1) { // 1 : noir
+			System.out.println("Le winneur est le joueur noir");
 		}
 	}
 	

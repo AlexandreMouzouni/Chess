@@ -110,8 +110,10 @@ public class Pion extends Piece {
 		
 		Position positionAvance = new Position(x, y + 2*indiceCouleur);
 		
-		if (Position.positionValide(positionAvance)) {
-			super.addCoup(positionAvance);
+		if (! (e.containsPiece(positionAvance)) ) {
+			if (Position.positionValide(positionAvance)) {
+				super.addCoup(positionAvance);
+			}
 		}
 	}
 	

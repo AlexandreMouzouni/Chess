@@ -75,7 +75,7 @@ public class Partie {
 	public void afficherTour() {
 		Echiquier e = this.getDernierEtat();
 		
-		if (e.getTourAJouer() == Couleur.BLANC ) {
+		if (e.getJoueurActuel() == Couleur.BLANC ) {
 			System.out.println("C'est aux blancs de jouer"); 
 		} else {
 			System.out.println("C'est aux noirs de jouer"); 
