@@ -472,6 +472,30 @@ public class Echiquier {
 		return false;
 	}
 
+	public boolean deplacementPossible() {
+		// Pour chaque pièce alliée, 
+		// Vérifier qu'elle peut se déplacer
+		
+		boolean couleurAlliee = this.getJoueurActuel();
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.containsPiece(i, j)) {
+					Piece p = this.getPiece(i, j); // Obtenir la pi�ce..
+					
+					if (p.getCouleur() == couleurAlliee) {
+						if (p.getListeCoups().size() > 0 ) { // Si la piece peut jouer..
+							return true; // alors on a au moins un déplacement à notre disposition
+						}
+					}
+				}
+			}
+		}
+		
+		// Aucune possibilité ne permet de nous déplacer: c'est un pat.
+		return false;
+	}
+
 	public boolean deplacementPossibleHorsEchec() {
 		// Pour chaque pièce alliée, vérifier qu'un de ses déplacements ne metterais
 		// pas le roi hors échec (y inclus le roi lui-même
@@ -487,15 +511,11 @@ public class Echiquier {
 					
 					if (p.getCouleur() == couleurAlliee) {
 						if (p.getListeCoups().size() > 0 ) { // Si la piece peut jouer..
-							System.out.println(p);
 							ArrayList<Position> a = p.getListeCoups();
 							
-							System.out.println("* * *");
-							System.out.println(p.getPosition());
 							for (Position posn : a) {
 								System.out.println(posn);
 							}
-							System.out.println("* --- *");
 							
 							// Pour chacun des coups possibles...
 							// .. on regarde un état en avant, et voit si cet état est encore
@@ -508,12 +528,10 @@ public class Echiquier {
 								
 								// Au moins une possibilité nous sort d'échec.
 								if (etatPossible.verifierEchec() == false) {
-									System.out.println("plus en échec et mat!!!");
 									return true;
 								}
 								
 								this.getPiece(posInitiale).setPosition(posInitiale);
-								System.out.println("---");
 							}
 						}
 					}

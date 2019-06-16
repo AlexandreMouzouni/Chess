@@ -61,13 +61,12 @@ public class Jeu {
 				}
 			}
 				
-			// if e.deplacementPossible()
-			/*
-			if () {
+			if (! e.deplacementPossible()) {
 				// Si il n'y a aucun déplacement possible et qu'on est pas en échec, c'est pat
 				gagnant = 0;
 				partieFinie = true;
-				this.annoncerWinneur(gagnant
+				this.annoncerWinneur(gagnant);
+			}
 			
 				
 			/* Avancement d'un coup */
