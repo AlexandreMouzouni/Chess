@@ -25,24 +25,30 @@ public class Roi extends Piece {
 		
 		for (int i =0 ; i<8; i++ ) {
 			Position nouvellePosition = positionDeDepart;
-			boolean estBloque  = false; //????
 			
 			nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
-			// Est-ce que la position générée n'est pas hors de l'échiquier?
+			
 			if (Position.positionValide(nouvellePosition)) {
-					
-				super.addCoup(nouvellePosition);
+				// Si la case contient une piece, quelle est sa couleur?
+				// Si la couleur est la même que la notre, on ne peut jouer
+				if (e.containsPiece(nouvellePosition)){
+					if (e.getPiece(nouvellePosition).getCouleur() != this.getCouleur()) {
+						super.addCoup(nouvellePosition);
+					}
+				} else {
+					super.addCoup(nouvellePosition);
 				}
 			}
+		}
 	}
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
-		if(super.getCouleur() == Couleur.NOIR){
+		if(couleurPion == Couleur.NOIR){
 			return "♚";
 		}
-			else {
-				return "♔";
-			}
+		else {
+			return "♔";
+		}
     }
 	public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide

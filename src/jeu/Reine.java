@@ -2,8 +2,6 @@ package jeu;
 
 import java.util.ArrayList;
 
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
-
 public class Reine  extends Piece {
 	public Reine(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
@@ -35,11 +33,20 @@ public class Reine  extends Piece {
 				nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
 				
 				if (Position.positionValide(nouvellePosition)) {
+					// Si la case contient une piece, on ne peut plus avancer
 					if (e.containsPiece(nouvellePosition)){
 						estBloque = true;
 					}
 					
-					super.addCoup(nouvellePosition);
+					// Si la case contient une piece, quelle est sa couleur?
+					// Si la couleur est la même que la notre, on ne peut avancer
+					if (e.containsPiece(nouvellePosition)){
+						if (e.getPiece(nouvellePosition).getCouleur() != this.getCouleur()) {
+							super.addCoup(nouvellePosition);
+						}
+					} else {
+						super.addCoup(nouvellePosition);
+					}
 				}
 			}
 		}
@@ -47,12 +54,12 @@ public class Reine  extends Piece {
 
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
-		if(super.getCouleur() == Couleur.NOIR){
+		if(couleurPion == Couleur.NOIR){
 			return "♛";
 		}
-			else {
-				return "♕";
-			}
+		else {
+			return "♕";
+		}
 	}
 	
 	public static void main(String args[]) {

@@ -38,5 +38,17 @@ public class Position {
 	public String toString() {
 		return "[" + this.x + ", " + this.y + "]";
 	}
+	
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (getClass() != o.getClass())
+			return false;
+		
+		Position other = (Position) o;
+		
+		return this.x == other.x &&
+				this.y == other.y;
+	}
 }
 

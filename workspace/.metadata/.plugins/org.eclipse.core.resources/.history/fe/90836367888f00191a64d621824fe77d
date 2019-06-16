@@ -1,6 +1,0 @@
-package jeu;
-
-public class Coup {
-	public Position pos1;
-	public Position pos2;
-}

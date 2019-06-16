@@ -2,8 +2,6 @@ package jeu;
 
 import java.util.ArrayList;
 
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
-
 public abstract class Piece {
     private final boolean couleur;
     private Position position;
@@ -19,6 +17,10 @@ public abstract class Piece {
 	
 	public void addCoup(Position coup) {
 		this.listeCoups.add(coup);
+	}
+	
+	public void clearListeCoups() {
+		this.listeCoups.clear();
 	}
 
 	public abstract void calculCoups(Echiquier e, Partie p);
@@ -39,14 +41,12 @@ public abstract class Piece {
     	this.position = unePosition;
     }
 
-    @objid ("824d4d6d-8caa-417a-a665-0b23cb5fd821")
     public boolean getCouleur() {
-        // Automatically generated method. Please delete this comment before entering specific code.
         return this.couleur ;
     }
     
     /**
-     * Crée un String affichable pour chaque pièce.
+     * Crï¿½e un String affichable pour chaque piï¿½ce.
      * @return
      */
     public abstract String affiche();

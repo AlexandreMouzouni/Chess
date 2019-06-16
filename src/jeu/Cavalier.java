@@ -2,8 +2,6 @@ package jeu;
 
 import java.util.ArrayList;
 
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
-
 public class Cavalier extends Piece {
 	public Cavalier(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
@@ -35,12 +33,12 @@ public class Cavalier extends Piece {
     }
     public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
-		if(super.getCouleur() == Couleur.NOIR){
+		if(couleurPion == Couleur.NOIR){
 			return "♞";
 		}
-			else {
-				return "♘";
-			}
+		else {
+			return "♘";
+		}
     }
     public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide

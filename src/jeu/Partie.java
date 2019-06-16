@@ -48,6 +48,39 @@ public class Partie {
 	public Echiquier getDernierEtat() {
 		return this.getEtat( historique.size() - 1 );
 	}
+	
+	public void afficherHistoriqueNotationI() {
+		// Si l'historique est vide, ne rien affcher.
+		if (historique.size() == 1) {
+			return;
+		}
+		
+		String s = "";
+		// On ne prend pas le coup du premier échiquier;
+		// il n'a pas de coup le précédant.
+		for (int i = 1; i < historique.size(); i++) {
+			s += i + ". " +
+					historique.get(i)
+					.getCoupPrecedant()
+					.toNotationI();
+			
+			if (i != historique.size()) {
+				s += "\n";
+			}
+		}
+		
+		System.out.println(s);
+	}
+	
+	public void afficherTour() {
+		Echiquier e = this.getDernierEtat();
+		
+		if (e.getTourAJouer() == Couleur.BLANC ) {
+			System.out.println("C'est aux blancs de jouer"); 
+		} else {
+			System.out.println("C'est aux noirs de jouer"); 
+		}
+	}
 
 	public boolean getTourAJoueur() {
 		return tourAJoueur;

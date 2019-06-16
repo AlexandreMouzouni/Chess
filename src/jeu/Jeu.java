@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Jeu {
 	private Joueur[] joueurs;
 	private Partie partie;
-
+	private Echiquier e;
 	
 	public Jeu() {  
 		this.partie = new Partie();
@@ -14,26 +14,33 @@ public class Jeu {
 	}
 	
 	/**
-	 * Point d'entrée.
+	 * Point d'entrï¿½e.
 	 */
 	public void run() {
 		// Menu tout ca 
 		boolean partieFinie = false;
 		
-		// Le constructeur Echiquier génère un nouvel échiquier 
-		// (l'état de base) avec toutes les pièces placées.
+		// Le constructeur Echiquier gï¿½nï¿½re un nouvel ï¿½chiquier 
+		// (l'Ã©tat de base) avec toutes les piï¿½ces placï¿½es.
 		Echiquier etatInitial = new Echiquier();
 		partie.addEtat(etatInitial);
 		
 		while (! partieFinie) {
-			// Obtenir l'état actuel du jeu
-			Echiquier e = partie.getDernierEtat();
+			// Obtenir l'Ã©tat actuel du jeu
+			this.e = partie.getDernierEtat();
 			
-			// Calculer les coups pour chacune des pièces
+			/* Affichage. */
+			e.afficher();
+			partie.afficherHistoriqueNotationI();
+			partie.afficherTour();
+			
+			// Calculer les coups pour chacune des piï¿½ces
+			// On met ce code ici car certain calculs de coups ont besoin de l'Ã©tat entier du jeu,
+			// comme le coup prï¿½cï¿½dent
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
 					if (e.containsPiece(i, j)) {
-						Piece p = e.getPiece(i, j); // Obtenir la pièce..
+						Piece p = e.getPiece(i, j); // Obtenir la piï¿½ce..
 						p.calculCoups(e, partie); // et calculer ses coups
 					}
 				}
@@ -42,9 +49,9 @@ public class Jeu {
 			/*
 			// obtenir le roi de la couleur qui correspond
 			Roi r = e.getRoi(Couleur.BLANC);
-			// Roi en échec?
+			// Roi en Ã©chec?
 			boolean echec = e.verifierEchec(couleur);
-			// Déplacement du roi impossible?
+			// DÃ©placement du roi impossible?
 			boolean deplacementPossible = e.deplacementRoiPossible(couleur);
 			
 			if (echec && (! deplacementPossible)) {
@@ -53,37 +60,90 @@ public class Jeu {
 			}
 			*/
 			Coup coup = this.demanderCoup();
-			System.out.println(coup);
 			
 			Echiquier newEtat = e.deplacement(coup);
+			// Changer de tour de joueur.
+			newEtat.setTourAJouer( ! e.getTourAJouer() );
 			partie.addEtat(newEtat);
+			
+			// Vider les coups de chacune des piÃ¨ces, pour pas de duplication
+			// On met ce code ici car certain calculs de coups ont besoin de l'ï¿½tat entier du jeu,
+			// comme le coup prï¿½cï¿½dent
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (e.containsPiece(i, j)) {
+						Piece p = e.getPiece(i, j); // Obtenir la piï¿½ce..
+						p.clearListeCoups();
+					}
+				}
+			}
 		}
 	}
 	
 	/**
 	 * Demande un coup.
-	 * @return Le coup entré par l'utilisateur
+	 * @return Le coup entrï¿½ par l'utilisateur
 	 */
 	public Coup demanderCoup() {
-		System.out.println("jouer to premier coup inchAllah tu mange le pion");
-		Scanner sc = new Scanner(System.in);
-		String s = sc.nextLine();
-		Position position1 =validationPosition(s);
+		boolean coupValide = false;
+		Coup c = null;
 		
-		System.out.println("jouer to deuxieme coup inchAllah tu mange le pion");
-		Scanner sc2 = new Scanner(System.in);
-		String s2 = sc2.nextLine();
-		Position position2 = validationPosition(s2);
+		while (! coupValide) {
+			Scanner sc = new Scanner(System.in);
+			
+			boolean posCorrecte;
+			String s = "";
+			
+			posCorrecte = false;
+			while ( ! posCorrecte ) {
+				System.out.print("Premier coup : ");
+				s = sc.nextLine();
+				posCorrecte = validationPosition(s);
+			}
+			Position position1 = traduirePosition(s);
+			
+			posCorrecte = false;
+			while ( ! posCorrecte ) {
+				System.out.print("Deuxieme coup : ");
+				s = sc.nextLine();
+				posCorrecte = validationPosition(s);
+			}
+			Position position2 = traduirePosition(s);
+			
+			c = new Coup(position1, position2);
+			
+			if (e.deplacementValide(c)) {
+				coupValide = true;
+			} else {
+				System.out.println("Le coup est invalide");
+			}
+		}
 
-		return new Coup(position1, position2);
+		// On retourne le dï¿½placement si il est correct
+		return c;
 	}
 	
-	public Position validationPosition(String s) {
+	public boolean validationPosition(String s) {
 		String t = s.toLowerCase();
-		int x = Integer.parseInt(t.substring(1, 2));
-				// Caster en int retourne 97, la valeur du code ascii de a
-		int y = t.charAt(0) - 'a';
+		if (t.length() != 2) {
+			return false;
+		}
+		int x = t.charAt(0) - 'a';
 		
+		int y = Integer.parseInt(t.substring(1, 2)) - 1;
+		
+		if (! Position.positionValide(new Position(x, y))) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public Position traduirePosition(String s) {
+		String t = s.toLowerCase();
+		int x = t.charAt(0) - 'a';
+		
+		int y = Integer.parseInt(t.substring(1, 2)) - 1;
 		return new Position(x, y);
 	}
 	

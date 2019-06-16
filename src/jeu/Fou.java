@@ -2,8 +2,6 @@ package jeu;
 
 import java.util.ArrayList;
 
-import com.modeliosoft.modelio.javadesigner.annotations.objid;
-
 public class Fou  extends Piece {
 	
 	public boolean estDeplace = false;
@@ -32,13 +30,21 @@ public class Fou  extends Piece {
 			while (Position.positionValide(nouvellePosition) && estBloque == false ) {
 				nouvellePosition = nouvellePosition.addition(vecteurPosition[i]);
 				
-				// Est-ce que la position générée n'est pas hors de l'échiquier?
 				if (Position.positionValide(nouvellePosition)) {
+					// Si la case contient une piece, on ne peut plus avancer
 					if (e.containsPiece(nouvellePosition)){
 						estBloque = true;
 					}
 					
-					super.addCoup(nouvellePosition);
+					// Si la case contient une piece, quelle est sa couleur?
+					// Si la couleur est la même que la notre, on ne peut avancer
+					if (e.containsPiece(nouvellePosition)){
+						if (e.getPiece(nouvellePosition).getCouleur() != this.getCouleur()) {
+							super.addCoup(nouvellePosition);
+						}
+					} else {
+						super.addCoup(nouvellePosition);
+					}
 				}
 			}
 		}
@@ -46,12 +52,12 @@ public class Fou  extends Piece {
 
 	public String affiche() {
 		boolean couleurPion = super.getCouleur(); 
-		if(super.getCouleur() == Couleur.NOIR){
+		if(couleurPion == Couleur.NOIR){
 			return "♝";
 		}
-			else {
-				return "♗";
-			}
+		else {
+			return "♗";
+		}
 	}
 	public static void main(String args[]) {
     	Echiquier e = new Echiquier(true); // Echiquier vide
@@ -66,5 +72,7 @@ public class Fou  extends Piece {
     	for (Position p : a) {
     		System.out.println(p);
     	}
+    	
+    	System.out.println( e.getPiece(posFou).affiche() );
 	}
 }
