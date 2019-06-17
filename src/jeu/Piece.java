@@ -1,9 +1,14 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Piece {
-    private final boolean couleur;
+public abstract class Piece implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2406138544679367393L;
+	private final boolean couleur;
     private Position position;
     private ArrayList<Position> listeCoups = new ArrayList<Position>();
     

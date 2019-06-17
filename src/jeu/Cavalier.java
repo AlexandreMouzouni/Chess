@@ -1,8 +1,13 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cavalier extends Piece {
+public class Cavalier extends Piece implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3888581433467813812L;
 	public Cavalier(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
 	}

@@ -1,10 +1,15 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pion extends Piece {
+public class Pion extends Piece implements Serializable {
 
-    public boolean premierRang;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -562705530395837994L;
+	public boolean premierRang;
 	
     public Pion(boolean uneCouleur, int x, int y) {
     	super(uneCouleur, x, y);

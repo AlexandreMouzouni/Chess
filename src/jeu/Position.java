@@ -1,6 +1,12 @@
 package jeu;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8426773222315341866L;
 	protected int x;
 	protected int y ;
 	

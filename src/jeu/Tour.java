@@ -1,8 +1,13 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tour extends Piece {
+public class Tour extends Piece implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9167291371256637675L;
 	public boolean premierDeplacement = true;
 	
 	@Override

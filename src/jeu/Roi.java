@@ -1,8 +1,13 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Roi extends Piece {
+public class Roi extends Piece implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4512909528076116324L;
 	public boolean premierDeplacement = true;
 	
 	public Roi(boolean uneCouleur, int uneLigne, int uneColonne) {

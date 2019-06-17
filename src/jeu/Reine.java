@@ -1,8 +1,15 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Reine  extends Piece {
+public class Reine  extends Piece implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7133105772275404195L;
+
+
 	public Reine(boolean uneCouleur, int uneLigne, int uneColonne) {
 		super(uneCouleur, uneLigne, uneColonne);
 	}

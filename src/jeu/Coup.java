@@ -1,6 +1,12 @@
 package jeu;
 
-public class Coup {
+import java.io.Serializable;
+
+public class Coup implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1561169022994161950L;
 	public Position pos1;
 	public Position pos2;
 	

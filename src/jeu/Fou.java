@@ -1,9 +1,14 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Fou  extends Piece {
+public class Fou  extends Piece implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5894535081593812324L;
 	public boolean estDeplace = false;
 	
 	public Fou(boolean uneCouleur, int uneLigne, int uneColonne) {

@@ -1,11 +1,14 @@
 package jeu;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-public class Partie {
+public class Partie implements Serializable  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2495604764546035402L;
 	private ArrayList<Echiquier> historique = new ArrayList<Echiquier>();
 	private Echiquier tempUndo;
 	// Un joueur commence toujours en blanc

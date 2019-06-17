@@ -1,114 +1,173 @@
 package jeu;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class Jeu {
-	private Joueur[] joueurs;
 	private Partie partie;
 	private Echiquier e;
+	private int gagnant;
 	
 	public Jeu() {  
 		this.partie = new Partie();
-		// on a itinialise ici dans le constructeur car c'est unique a l'objet et nn a tous les objets
-		this.joueurs = new Joueur[]{ new Joueur(Couleur.BLANC),new Joueur(Couleur.NOIR) };
+	}
+	
+	/** Boucle principale.
+	 * 
+	 */
+	public void menu() {
+		this.initialiser();
+		
+		while (true) {
+			String s = this.demandeMenu();
+			this.run(s);
+		}
+	}
+	
+	public String demandeMenu() {
+		boolean sortie = false; 
+		while (! sortie) {
+			System.out.println("Entrez [1: Sauvegarder], [2: Charger], [3: Undo], [4: Redo] ou autre pour continuer");
+			Scanner sc = new Scanner(System.in);
+			
+			String s = sc.nextLine();
+					
+			try {
+				int i = Integer.parseInt(s);
+				
+				if (i == 1) {
+					this.sauvergarder();
+				} else if (i == 2) {
+					this.charger();
+				} else if (i == 3) {
+					boolean r = this.partie.undo();
+					if (r == false) {
+						System.out.println("On ne peut pas revenir plus que le coup initial!");
+					}
+				} else if (i == 4) {
+					boolean r = this.partie.redo();
+					if (r == false) {
+						System.out.println("Aucun coup auquel revenir!");
+					}
+				} else {
+					sortie = true;
+					return s;
+				}
+			} catch (NumberFormatException e) {
+				sortie = true;
+				return s;
+			}
+		}
+		return "";
 	}
 	
 	/**
-	 * Point d'entr�e.
+	 * Initialisation du jeu.
 	 */
-	public void run() {
-		boolean partieFinie = false;
-		int gagnant;
-		
+	public void initialiser() {
 		// Le constructeur Echiquier g�n�re un nouvel �chiquier 
 		// (l'état de base) avec toutes les pi�ces plac�es.
 		Echiquier etatInitial = new Echiquier();
 		partie.addEtat(etatInitial);
+	}
+	
+	/**
+	 * Itération de jeu.
+	 */
+	public void run(String s) {
+		// Obtenir l'état actuel du jeu
+		this.e = partie.getDernierEtat();
 		
-		while (! partieFinie) {
-			// Obtenir l'état actuel du jeu
-			this.e = partie.getDernierEtat();
-			
-			/* Affichage. */
+		if (e.partieFinie) {
 			e.afficher();
 			partie.afficherHistoriqueNotationI();
-			partie.afficherTour();
 			
-			// Calcul des roques
-			e.updateRoques();
-			// Calculer les coups pour chacune des pi�ces
+			System.out.println("La partie est finie");
+			return;
+		}
+		
+		/* Affichage. */
+		e.afficher();
+		partie.afficherHistoriqueNotationI();
+		partie.afficherTour();
+		
+		/* Calcul des coups des pièces */
+		e.updateRoques();
+		// Calculer les coups pour chacune des pi�ces
+		// On met ce code ici car certain calculs de coups ont besoin de l'état entier du jeu,
+		// comme le coup pr�c�dent
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (e.containsPiece(i, j)) {
+					Piece p = e.getPiece(i, j); // Obtenir la pi�ce..
+					p.calculCoups(e, partie); // et calculer ses coups
+				}
+			}
+		}
+		
+		/* Vérification Echec, Echec et Mat, Pat */
+		if (e.verifierEchec()) { // Est-ce que une pièce adverse possède le roi dans son chemin?
+			if ( ! (e.deplacementPossibleHorsEchec() ) ) {// Y'a-t-il un déplacement mettant hors échec?
+				// Si non, c'est échec et mat
+				gagnant = this.getGagnant(); // Le gagnant est le joueur adverse
+				e.partieFinie = true;
+				this.annoncerWinneur(gagnant);
+			} else {
+			// Si oui, c'est échec et on l'annonce
+				this.annoncerEchec();
+			}
+		}
+			
+		if (! e.deplacementPossible()) {
+			// Si il n'y a aucun déplacement possible et qu'on est pas en échec, c'est pat
+			gagnant = 0;
+			e.partieFinie = true;
+			this.annoncerWinneur(gagnant);
+		}
+		
+			
+		/* Avancement d'un coup */
+		if (! e.partieFinie) {
+			Coup coup = this.demanderCoup(s);
+
+			Echiquier newEtat;
+			
+			// Cas spécial: le roque fait deux déplacements en un coup.
+			int roque = this.testRoque(coup);
+			
+			// Cas spécial: la promotion
+			if (this.checkPromotion(coup)) { /* Promotion */
+				int typePiece = this.demanderPiecePromotion();
+				
+				newEtat = e.promotion(coup, typePiece);
+				
+			} else if (roque != 0) { /* Roque */
+				System.out.println("coup roque");
+				System.out.println(coup);
+				newEtat = this.roque(roque, coup); // Au niveau de la partie car on crée deux coups.
+				
+			} else { /* Coup normal */
+				newEtat = e.deplacement(coup);
+			}
+			
+			
+			/* Changer de tour de joueur. */
+			newEtat.setTourAJouer( ! e.getJoueurActuel() );
+			// L'état actuel devient le nouvel état (tour de boucle suivant.)
+			partie.addEtat(newEtat);
+			
+			// Vider les coups de chacune des pièces, pour pas de duplication
 			// On met ce code ici car certain calculs de coups ont besoin de l'état entier du jeu,
-			// comme le coup pr�c�dent
+			// comme le coup précédent
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
 					if (e.containsPiece(i, j)) {
 						Piece p = e.getPiece(i, j); // Obtenir la pi�ce..
-						p.calculCoups(e, partie); // et calculer ses coups
-					}
-				}
-			}
-			
-			/* Vérification Echec, Echec et Mat, Pat */
-			if (e.verifierEchec()) { // Est-ce que une pièce adverse possède le roi dans son chemin?
-				if ( ! (e.deplacementPossibleHorsEchec() ) ) {// Y'a-t-il un déplacement mettant hors échec?
-					// Si non, c'est échec et mat
-					gagnant = this.getGagnant(); // Le gagnant est le joueur adverse
-					partieFinie = true;
-					this.annoncerWinneur(gagnant);
-				} else {
-				// Si oui, c'est échec et on l'annonce
-					this.annoncerEchec();
-				}
-			}
-				
-			if (! e.deplacementPossible()) {
-				// Si il n'y a aucun déplacement possible et qu'on est pas en échec, c'est pat
-				gagnant = 0;
-				partieFinie = true;
-				this.annoncerWinneur(gagnant);
-			}
-			
-				
-			/* Avancement d'un coup */
-			if (! partieFinie) {
-				Coup coup = this.demanderCoup();
-	
-				Echiquier newEtat;
-				
-				// Cas spécial: le roque fait deux déplacements en un coup.
-				int roque = this.testRoque(coup);
-				System.out.println(roque);
-				
-				// Cas spécial: la promotion
-				if (this.checkPromotion(coup)) { /* Promotion */
-					Scanner sc = new Scanner(System.in);
-					int typePiece = this.demanderPiecePromotion();
-					
-					newEtat = e.promotion(coup, typePiece);
-					
-				} else if (roque != 0) { /* Roque */
-					System.out.println("coup roque");
-					System.out.println(coup);
-					newEtat = this.roque(roque, coup); // Au niveau de la partie car on crée deux coups.
-					
-				} else { /* Coup normal */
-					newEtat = e.deplacement(coup);
-				}
-				
-				// Changer de tour de joueur.
-				newEtat.setTourAJouer( ! e.getJoueurActuel() );
-				// L'état actuel devient le nouvel état (tour de boucle suivant.)
-				partie.addEtat(newEtat);
-				
-				// Vider les coups de chacune des pièces, pour pas de duplication
-				// On met ce code ici car certain calculs de coups ont besoin de l'état entier du jeu,
-				// comme le coup précédent
-				for (int i = 0; i < 8; i++) {
-					for (int j = 0; j < 8; j++) {
-						if (e.containsPiece(i, j)) {
-							Piece p = e.getPiece(i, j); // Obtenir la pi�ce..
-							p.clearListeCoups();
-						}
+						p.clearListeCoups();
 					}
 				}
 			}
@@ -119,32 +178,33 @@ public class Jeu {
 	 * Demande un coup.
 	 * @return Le coup entr� par l'utilisateur
 	 */
-	public Coup demanderCoup() {
+	public Coup demanderCoup(String entree) {
 		boolean coupValide = false;
 		Coup c = null;
 		
 		while (! coupValide) {
 			Scanner sc = new Scanner(System.in);
 			
+			String s = entree; // l'entrée antérieure faite dans le menu
+			
 			boolean posCorrecte;
-			String s = "";
+			Position position1 = null;
+			Position position2 = null;
 			
-			posCorrecte = false;
-			while ( ! posCorrecte ) {
-				System.out.print("Entrez une position: ");
-				s = sc.nextLine();
-				posCorrecte = validationPosition(s);
+			System.out.print("Premiere pos : ");
+			s = sc.nextLine();
+			posCorrecte = validationPosition(s);
+			if (posCorrecte) {
+				position1 = traduirePosition(s);
 			}
-			Position position1 = traduirePosition(s);
 			
-			posCorrecte = false;
-			while ( ! posCorrecte ) {
-				System.out.print("Deuxieme coup : ");
-				s = sc.nextLine();
-				posCorrecte = validationPosition(s);
+			System.out.print("Deuxieme pos : ");
+			s = sc.nextLine();
+			posCorrecte = validationPosition(s);
+			if (posCorrecte) {
+				position2 = traduirePosition(s);
 			}
-			Position position2 = traduirePosition(s);
-			
+				
 			c = new Coup(position1, position2);
 			
 			if (e.deplacementValide(c)) {
@@ -322,8 +382,52 @@ public class Jeu {
 		}
 	}
 	
+	public void sauvergarder() {
+		try {
+			System.out.println("Nom du fichier ou sauvegarder?");
+			Scanner sc = new Scanner(System.in);
+			String nomFichier = sc.nextLine();
+			
+			File fichier = new File(nomFichier);
+	
+			 // Flux
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier));
+					
+			 // Prise de l'objet
+			Partie p = this.partie;
+	
+			 // Sérialization de l'objet
+			oos.writeObject(p);
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void charger() {
+		try {
+			System.out.println("Nom du fichier a charger?");
+			Scanner sc = new Scanner(System.in);
+			String nomFichier = sc.nextLine();
+			
+			File fichier = new File(nomFichier);
+	
+			 // Flux
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichier));
+					
+			 // Désérialization de l'objet
+			Partie p = (Partie) ois.readObject();
+			
+			// Stockage dans la classe
+			this.partie = p;
+			ois.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		Jeu j = new Jeu();
-		j.run();
+		j.menu();
 	}
 }

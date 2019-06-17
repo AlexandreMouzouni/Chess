@@ -1,5 +1,6 @@
 package jeu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
@@ -9,7 +10,11 @@ import java.util.ArrayList;
  * - le tour actuel.
  * - la case en passant.
  */
-public class Echiquier {
+public class Echiquier implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5880895197797252039L;
 	// Les pièces.
     private Piece[][] plateau = new Piece[8][8];
     // Le coup précédant.
@@ -20,6 +25,7 @@ public class Echiquier {
     private boolean[] roquesPossibles = {true, true, true, true};
     // Le tour actuel. Le premier tour est toujours aux blancs.
     private boolean tourAJouer = Couleur.BLANC;
+    public boolean partieFinie = false;
     
 	public Echiquier() {
     	init();
@@ -159,12 +165,6 @@ public class Echiquier {
     	if ( p.getCouleur() != this.tourAJouer ) {
     		return false;
     	}
-    
-		ArrayList<Position> a = p.getListeCoups();
-		System.out.println("--");
-		for (Position pos : a) {
-			System.out.println(pos);
-		}
     	
     	// Est-ce que le déplacement est dans la liste de déplacement de la pièce sélectionnée?
     	// Si elle n'est pas contenue dedans, le coup est impossible
@@ -449,7 +449,6 @@ public class Echiquier {
 		}
 		
 		boolean couleurEnnemie = ! this.getJoueurActuel();
-		System.out.println(posRoi + "+++");
 		
 		// Vérifier qu'aucune pièce ennemie ne possède le roi dans ses déplacement possibles
 		for (int i = 0; i < 8; i++) {
@@ -513,16 +512,10 @@ public class Echiquier {
 						if (p.getListeCoups().size() > 0 ) { // Si la piece peut jouer..
 							ArrayList<Position> a = p.getListeCoups();
 							
-							for (Position posn : a) {
-								System.out.println(posn);
-							}
-							
 							// Pour chacun des coups possibles...
 							// .. on regarde un état en avant, et voit si cet état est encore
 							// en échec
 							for (Position posnPossible : a) {
-								System.out.println(p.getPosition());
-								System.out.println(posnPossible);
 								Coup c = new Coup(p.getPosition(), posnPossible);
 								Echiquier etatPossible = this.deplacement(c);
 								
