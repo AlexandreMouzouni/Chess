@@ -23,12 +23,12 @@ public class Jeu {
 		this.initialiser();
 		
 		while (true) {
-			String s = this.demandeMenu();
-			this.run(s);
+			this.demandeMenu();
+			this.run();
 		}
 	}
 	
-	public String demandeMenu() {
+	public void demandeMenu() {
 		boolean sortie = false; 
 		while (! sortie) {
 			System.out.println("Entrez [1: Sauvegarder], [2: Charger], [3: Undo], [4: Redo] ou autre pour continuer");
@@ -55,14 +55,12 @@ public class Jeu {
 					}
 				} else {
 					sortie = true;
-					return s;
 				}
 			} catch (NumberFormatException e) {
 				sortie = true;
-				return s;
 			}
 		}
-		return "";
+		return;
 	}
 	
 	/**
@@ -78,7 +76,7 @@ public class Jeu {
 	/**
 	 * Itération de jeu.
 	 */
-	public void run(String s) {
+	public void run() {
 		// Obtenir l'état actuel du jeu
 		this.e = partie.getDernierEtat();
 		
@@ -132,7 +130,7 @@ public class Jeu {
 			
 		/* Avancement d'un coup */
 		if (! e.partieFinie) {
-			Coup coup = this.demanderCoup(s);
+			Coup coup = this.demanderCoup();
 
 			Echiquier newEtat;
 			
@@ -146,8 +144,6 @@ public class Jeu {
 				newEtat = e.promotion(coup, typePiece);
 				
 			} else if (roque != 0) { /* Roque */
-				System.out.println("coup roque");
-				System.out.println(coup);
 				newEtat = this.roque(roque, coup); // Au niveau de la partie car on crée deux coups.
 				
 			} else { /* Coup normal */
@@ -178,39 +174,42 @@ public class Jeu {
 	 * Demande un coup.
 	 * @return Le coup entr� par l'utilisateur
 	 */
-	public Coup demanderCoup(String entree) {
+	public Coup demanderCoup() {
 		boolean coupValide = false;
 		Coup c = null;
 		
 		while (! coupValide) {
 			Scanner sc = new Scanner(System.in);
 			
-			String s = entree; // l'entrée antérieure faite dans le menu
+			String s = ""; // l'entrée antérieure faite dans le menu
 			
-			boolean posCorrecte;
+			boolean posCorrecte1;
+			boolean posCorrecte2;
 			Position position1 = null;
 			Position position2 = null;
 			
 			System.out.print("Premiere pos : ");
 			s = sc.nextLine();
-			posCorrecte = validationPosition(s);
-			if (posCorrecte) {
+			posCorrecte1 = validationPosition(s);
+			if (posCorrecte1) {
 				position1 = traduirePosition(s);
 			}
 			
 			System.out.print("Deuxieme pos : ");
 			s = sc.nextLine();
-			posCorrecte = validationPosition(s);
-			if (posCorrecte) {
+			posCorrecte2 = validationPosition(s);
+			if (posCorrecte2) {
 				position2 = traduirePosition(s);
 			}
 				
 			c = new Coup(position1, position2);
 			
-			if (e.deplacementValide(c)) {
-				coupValide = true;
-			} else {
-				System.out.println("Le coup est invalide");
+			if (posCorrecte1 && posCorrecte2) {
+				if (e.deplacementValide(c)) {
+					coupValide = true;
+				} else {
+					System.out.println("Le coup est invalide");
+				}
 			}
 		}
 
@@ -254,7 +253,6 @@ public class Jeu {
 					return 1;
 				}
 			} else if (p2.equals(new Position(6, 0)) ) {
-				System.out.println("Roque 1" +e.getRoquesPossibles()[1]);
 				if (e.getRoquesPossibles()[1] == true) { // Petit roque blanc
 					return 2;
 				}

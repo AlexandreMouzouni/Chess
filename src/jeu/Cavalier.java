@@ -13,10 +13,10 @@ public class Cavalier extends Piece implements Serializable {
 	}
 	
 	public void calculCoups(Echiquier e, Partie p) {
-		this.calculCoups();
+		this.calculCoups(e);
 	}
 	
-    public void calculCoups() {
+    public void calculCoups(Echiquier e) {
     	Position[] deplacements = new Position[8];
     	Position positionDepart = super.getPosition();
     	
@@ -32,7 +32,13 @@ public class Cavalier extends Piece implements Serializable {
     	for (int i = 0; i < 8; i++) {
     		Position nouvellePosition = positionDepart.addition(deplacements[i]);
     		if (Position.positionValide( nouvellePosition ) ) {
-    			super.addCoup(nouvellePosition);
+    			if (e.containsPiece(nouvellePosition)) {
+    				if (e.getPiece(nouvellePosition).getCouleur() != this.getCouleur()) {
+    					super.addCoup(nouvellePosition);
+    				}
+    			} else {
+    				super.addCoup(nouvellePosition);
+    			}
     		}
     	}
     }
@@ -49,7 +55,7 @@ public class Cavalier extends Piece implements Serializable {
     	Echiquier e = new Echiquier(true); // Echiquier vide
     	
     	e.setPiece(0, 0, new Cavalier(Couleur.BLANC, 0, 0));
-    	((Cavalier) e.getPiece(0, 0)).calculCoups();
+    	((Cavalier) e.getPiece(0, 0)).calculCoups(e);
     	ArrayList<Position> a = e.getPiece(0, 0).getListeCoups();
     	
     	for (Position p : a) {
